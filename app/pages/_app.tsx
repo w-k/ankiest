@@ -6,6 +6,7 @@ import {
   AuthorizationError,
   ErrorFallbackProps,
   useQueryErrorResetBoundary,
+  useSession,
 } from "blitz"
 import LoginForm from "app/auth/components/LoginForm"
 
@@ -14,10 +15,11 @@ import { Banner } from "app/components/Banner"
 
 export default function App({ Component, pageProps }: AppProps) {
   const getLayout = Component.getLayout || ((page) => page)
+  const session = useSession()
 
   return (
     <>
-      <Banner />
+      {session.userId && <Banner />}
       <div className="mt-10 w-full tablet:w-2/3 laptop:w-1/2 mx-auto text-lg tablet:text-md laptop:text-sm">
         <ErrorBoundary
           FallbackComponent={RootErrorFallback}
