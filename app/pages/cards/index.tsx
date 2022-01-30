@@ -3,6 +3,7 @@ import { Head, Link, usePaginatedQuery, useRouter, BlitzPage, Routes } from "bli
 import Layout from "app/core/layouts/Layout"
 import getCards from "app/cards/queries/getCards"
 import { Button } from "app/components/Button"
+import BannerLayout from "app/core/layouts/BannerLayout"
 
 const ITEMS_PER_PAGE = 100
 
@@ -91,6 +92,6 @@ const CardsPage: BlitzPage = () => {
 }
 
 CardsPage.authenticate = true
-CardsPage.getLayout = (page) => <Layout>{page}</Layout>
+CardsPage.getLayout = (page) => <BannerLayout>{page}</BannerLayout>
 
 export default CardsPage

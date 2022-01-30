@@ -15,3 +15,7 @@ export const ThumbUpIcon = () => {
 export const ThumbDownIcon = () => {
   return <span className="material-icons">thumb_down</span>
 }
+
+export const LogoutIcon = () => {
+  return <span className="material-icons">logout</span>
+}

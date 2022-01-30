@@ -1,6 +1,7 @@
 import { BlitzPage, Routes } from "blitz"
 import { LinkButton } from "app/components/LinkButton"
 import Layout from "app/core/layouts/Layout"
+import BannerLayout from "app/core/layouts/BannerLayout"
 
 const Home: BlitzPage = () => {
   return (
@@ -22,6 +23,6 @@ const Home: BlitzPage = () => {
 
 Home.authenticate = true
 Home.suppressFirstRenderFlicker = true
-Home.getLayout = (page) => <Layout title="Home">{page}</Layout>
+Home.getLayout = (page) => <BannerLayout title="Home">{page}</BannerLayout>
 
 export default Home

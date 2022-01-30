@@ -4,6 +4,7 @@ import Layout from "app/core/layouts/Layout"
 import getCard from "app/cards/queries/getCard"
 import updateCard from "app/cards/mutations/updateCard"
 import { CardForm } from "app/cards/components/CardForm"
+import BannerLayout from "app/core/layouts/BannerLayout"
 
 export const EditCard = () => {
   const router = useRouter()
@@ -70,6 +71,6 @@ const EditCardPage: BlitzPage = () => {
 }
 
 EditCardPage.authenticate = true
-EditCardPage.getLayout = (page) => <Layout>{page}</Layout>
+EditCardPage.getLayout = (page) => <BannerLayout>{page}</BannerLayout>
 
 export default EditCardPage

@@ -3,6 +3,7 @@ import { Head, Link, useRouter, useQuery, useParam, BlitzPage, useMutation, Rout
 import Layout from "app/core/layouts/Layout"
 import getCard from "app/cards/queries/getCard"
 import deleteCard from "app/cards/mutations/deleteCard"
+import BannerLayout from "app/core/layouts/BannerLayout"
 
 export const Card = () => {
   const router = useRouter()
@@ -61,6 +62,6 @@ const ShowCardPage: BlitzPage = () => {
 }
 
 ShowCardPage.authenticate = true
-ShowCardPage.getLayout = (page) => <Layout>{page}</Layout>
+ShowCardPage.getLayout = (page) => <BannerLayout title="Home">{page}</BannerLayout>
 
 export default ShowCardPage

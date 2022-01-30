@@ -2,6 +2,7 @@ import { Link, useRouter, useMutation, BlitzPage, Routes } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import createCard from "app/cards/mutations/createCard"
 import { CardForm } from "app/cards/components/CardForm"
+import BannerLayout from "app/core/layouts/BannerLayout"
 
 const NewCardPage: BlitzPage = () => {
   const router = useRouter()
@@ -32,6 +33,6 @@ const NewCardPage: BlitzPage = () => {
 }
 
 NewCardPage.authenticate = true
-NewCardPage.getLayout = (page) => <Layout title={"Create New Card"}>{page}</Layout>
+NewCardPage.getLayout = (page) => <BannerLayout title={"Create New Card"}>{page}</BannerLayout>
 
 export default NewCardPage

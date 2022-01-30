@@ -1,8 +1,10 @@
+import { Banner } from "app/components/Banner"
 import { Head, BlitzLayout } from "blitz"
 
-const Layout: BlitzLayout<{ title?: string }> = ({ title, children }) => {
+const BannerLayout: BlitzLayout<{ title?: string }> = ({ title, children }) => {
   return (
     <>
+      <Banner />
       <Head>
         <title>{title || "ankiest"}</title>
         <link rel="icon" href="/favicon.ico" />
@@ -15,4 +17,4 @@ const Layout: BlitzLayout<{ title?: string }> = ({ title, children }) => {
   )
 }
 
-export default Layout
+export default BannerLayout
