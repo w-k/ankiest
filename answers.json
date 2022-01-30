@@ -1,0 +1,618 @@
+[
+  {
+    "id": 1,
+    "answers": "[\"village\"]"
+  },
+  {
+    "id": 2,
+    "answers": "[\"to remove\", \"remove\"]"
+  },
+  {
+    "id": 3,
+    "answers": "[\"assistance\"]"
+  },
+  {
+    "id": 4,
+    "answers": "[\"member of the crew\"]"
+  },
+  {
+    "id": 5,
+    "answers": "[\"lack\"]"
+  },
+  {
+    "id": 6,
+    "answers": "[\"receive\"]"
+  },
+  {
+    "id": 7,
+    "answers": "[\"below\"]"
+  },
+  {
+    "id": 8,
+    "answers": "[\"unusual\"]"
+  },
+  {
+    "id": 9,
+    "answers": "[\"discomfort\"]"
+  },
+  {
+    "id": 11,
+    "answers": "[\"measures\"]"
+  },
+  {
+    "id": 12,
+    "answers": "[\"decay\"]"
+  },
+  {
+    "id": 13,
+    "answers": "[\"the curfew\", \"curfew\"]"
+  },
+  {
+    "id": 14,
+    "answers": "[\"real estate agency\"]"
+  },
+  {
+    "id": 15,
+    "answers": "[\"avocado\"]"
+  },
+  {
+    "id": 16,
+    "answers": "[\"easy\"]"
+  },
+  {
+    "id": 17,
+    "answers": "[\"łyżka\", \"spoon\"]"
+  },
+  {
+    "id": 18,
+    "answers": "[\"łyżka\", \"spoon\"]"
+  },
+  {
+    "id": 19,
+    "answers": "[\"premiere\", \"premiera\"]"
+  },
+  {
+    "id": 20,
+    "answers": "[\"release\"]"
+  },
+  {
+    "id": 21,
+    "answers": "[\"essential\"]"
+  },
+  {
+    "id": 22,
+    "answers": "[\"kupić\", \"buy\"]"
+  },
+  {
+    "id": 23,
+    "answers": "[\"teraz\", \"now\"]"
+  },
+  {
+    "id": 24,
+    "answers": "[\"płacić\", \"pay\"]"
+  },
+  {
+    "id": 25,
+    "answers": "[\"karta kredytowa\", \"credit card\"]"
+  },
+  {
+    "id": 26,
+    "answers": "[\"ratusz\", \"town hall\", \"city hall\"]"
+  },
+  {
+    "id": 27,
+    "answers": "[\"wynajmować\"]"
+  },
+  {
+    "id": 28,
+    "answers": "[\"umowa najmu\"]"
+  },
+  {
+    "id": 29,
+    "answers": "[\"krewetka\", \"shrimp\", \"prawn\"]"
+  },
+  {
+    "id": 30,
+    "answers": "[\"rak\"]"
+  },
+  {
+    "id": 31,
+    "answers": "[\"a light\", \"światło\"]"
+  },
+  {
+    "id": 32,
+    "answers": "[\"fresh air\"]"
+  },
+  {
+    "id": 33,
+    "answers": "[\"simple\"]"
+  },
+  {
+    "id": 34,
+    "answers": "[\"move\"]"
+  },
+  {
+    "id": 35,
+    "answers": "[\"place\"]"
+  },
+  {
+    "id": 36,
+    "answers": "[\"courgette\", \"cukinia\"]"
+  },
+  {
+    "id": 37,
+    "answers": "[\"pan\", \"patelnia\"]"
+  },
+  {
+    "id": 38,
+    "answers": "[\"forever\"]"
+  },
+  {
+    "id": 39,
+    "answers": "[\"receta\"]"
+  },
+  {
+    "id": 40,
+    "answers": "[\"cocina\"]"
+  },
+  {
+    "id": 42,
+    "answers": "[\"learn\", \"nauczyć się\"]"
+  },
+  {
+    "id": 44,
+    "answers": "[\"entender\", \"comprender\"]"
+  },
+  {
+    "id": 45,
+    "answers": "[\"do\", \"robić\"]"
+  },
+  {
+    "id": 46,
+    "answers": "[\"hacer\"]"
+  },
+  {
+    "id": 47,
+    "answers": "[\"proposal\"]"
+  },
+  {
+    "id": 48,
+    "answers": "[\"para ello\"]"
+  },
+  {
+    "id": 49,
+    "answers": "[\"cut\"]"
+  },
+  {
+    "id": 50,
+    "answers": "[\"fino\"]"
+  },
+  {
+    "id": 51,
+    "answers": "[\"frío\"]"
+  },
+  {
+    "id": 52,
+    "answers": "[\"carrot\", \"marchewka\"]"
+  },
+  {
+    "id": 53,
+    "answers": "[\"puedo\"]"
+  },
+  {
+    "id": 54,
+    "answers": "[\"hoy\"]"
+  },
+  {
+    "id": 55,
+    "answers": "[\"después\"]"
+  },
+  {
+    "id": 57,
+    "answers": "[\"puedes repetir\", \"puedes repetir?\"]"
+  },
+  {
+    "id": 58,
+    "answers": "[\"nuestra\"]"
+  },
+  {
+    "id": 59,
+    "answers": "[\"somos\"]"
+  },
+  {
+    "id": 60,
+    "answers": "[\"deletrear\"]"
+  },
+  {
+    "id": 61,
+    "answers": "[\"edad\"]"
+  },
+  {
+    "id": 62,
+    "answers": "[\"palabra\"]"
+  },
+  {
+    "id": 64,
+    "answers": "[\"decir\"]"
+  },
+  {
+    "id": 68,
+    "answers": "[\"nueces\"]"
+  },
+  {
+    "id": 69,
+    "answers": "[\"un quarto de gambas\"]"
+  },
+  {
+    "id": 70,
+    "answers": "[\"voy a deletrear\"]"
+  },
+  {
+    "id": 71,
+    "answers": "[\"el lunes\"]"
+  },
+  {
+    "id": 72,
+    "answers": "[\"el martes\"]"
+  },
+  {
+    "id": 73,
+    "answers": "[\"el miércoles\"]"
+  },
+  {
+    "id": 74,
+    "answers": "[\"el jueves\"]"
+  },
+  {
+    "id": 10,
+    "answers": "[\"will be\"]"
+  },
+  {
+    "id": 67,
+    "answers": "[\"la nuez\"]"
+  },
+  {
+    "id": 56,
+    "answers": "[\"dime\"]"
+  },
+  {
+    "id": 63,
+    "answers": "[\"pedir\"]"
+  },
+  {
+    "id": 65,
+    "answers": "[\"alguien\"]"
+  },
+  {
+    "id": 66,
+    "answers": "[\"contestar\"]"
+  },
+  {
+    "id": 75,
+    "answers": "[\"el viernes\"]"
+  },
+  {
+    "id": 77,
+    "answers": "[\"el domingo\"]"
+  },
+  {
+    "id": 78,
+    "answers": "[\"treinta\"]"
+  },
+  {
+    "id": 79,
+    "answers": "[\"seis\"]"
+  },
+  {
+    "id": 80,
+    "answers": "[\"siete\"]"
+  },
+  {
+    "id": 81,
+    "answers": "[\"nueve\"]"
+  },
+  {
+    "id": 84,
+    "answers": "[\"llegar\"]"
+  },
+  {
+    "id": 86,
+    "answers": "[\"nuevo\"]"
+  },
+  {
+    "id": 89,
+    "answers": "[\"creo\"]"
+  },
+  {
+    "id": 92,
+    "answers": "[\"cuándo\", \"cuando\"]"
+  },
+  {
+    "id": 94,
+    "answers": "[\"cosa\"]"
+  },
+  {
+    "id": 101,
+    "answers": "[\"delgado\", \"fino\"]"
+  },
+  {
+    "id": 103,
+    "answers": "[\"cerca\"]"
+  },
+  {
+    "id": 104,
+    "answers": "[\"razón\"]"
+  },
+  {
+    "id": 107,
+    "answers": "[\"mezcla\"]"
+  },
+  {
+    "id": 108,
+    "answers": "[\"entre\"]"
+  },
+  {
+    "id": 109,
+    "answers": "[\"dar\"]"
+  },
+  {
+    "id": 87,
+    "answers": "[\"esperar\"]"
+  },
+  {
+    "id": 95,
+    "answers": "[\"cumpleaños\"]"
+  },
+  {
+    "id": 88,
+    "answers": "[\"espere\"]"
+  },
+  {
+    "id": 82,
+    "answers": "[\"diez\"]"
+  },
+  {
+    "id": 97,
+    "answers": "[\"paraguas\"]"
+  },
+  {
+    "id": 124,
+    "answers": "[\"pobre\"]"
+  },
+  {
+    "id": 106,
+    "answers": "[\"acostarse\"]"
+  },
+  {
+    "id": 144,
+    "answers": "[\"me apetece\"]"
+  },
+  {
+    "id": 90,
+    "answers": "[\"adivinar\"]"
+  },
+  {
+    "id": 116,
+    "answers": "[\"yo doy\", \"doy\"]"
+  },
+  {
+    "id": 143,
+    "answers": "[\"chándal\"]"
+  },
+  {
+    "id": 129,
+    "answers": "[\"apuntarse\"]"
+  },
+  {
+    "id": 135,
+    "answers": "[\"pareja\"]"
+  },
+  {
+    "id": 126,
+    "answers": "[\"invierno\"]"
+  },
+  {
+    "id": 111,
+    "answers": "[\"casi\"]"
+  },
+  {
+    "id": 102,
+    "answers": "[\"aburrido\"]"
+  },
+  {
+    "id": 127,
+    "answers": "[\"hace frío\"]"
+  },
+  {
+    "id": 142,
+    "answers": "[\"techo\"]"
+  },
+  {
+    "id": 113,
+    "answers": "[\"reescribir\"]"
+  },
+  {
+    "id": 114,
+    "answers": "[\"dar\"]"
+  },
+  {
+    "id": 85,
+    "answers": "[\"venir\", \"llegar\"]"
+  },
+  {
+    "id": 96,
+    "answers": "[\"parar\"]"
+  },
+  {
+    "id": 105,
+    "answers": "[\"dejar\", \"salir\"]"
+  },
+  {
+    "id": 128,
+    "answers": "[\"hace calor\"]"
+  },
+  {
+    "id": 83,
+    "answers": "[\"a las nueve de la mañana\", \"a las 9 de la mañana\"]"
+  },
+  {
+    "id": 138,
+    "answers": "[\"para ello\"]"
+  },
+  {
+    "id": 125,
+    "answers": "[\"empezar\"]"
+  },
+  {
+    "id": 112,
+    "answers": "[\"pronombre\"]"
+  },
+  {
+    "id": 123,
+    "answers": "[\"salgo\"]"
+  },
+  {
+    "id": 76,
+    "answers": "[\"el sábado\"]"
+  },
+  {
+    "id": 118,
+    "answers": "[\"conocer\", \"saber\"]"
+  },
+  {
+    "id": 136,
+    "answers": "[\"lejos\"]"
+  },
+  {
+    "id": 139,
+    "answers": "[\"aunque\"]"
+  },
+  {
+    "id": 119,
+    "answers": "[\"conozco\", \"sé\"]"
+  },
+  {
+    "id": 140,
+    "answers": "[\"suelo\", \"piso\"]"
+  },
+  {
+    "id": 131,
+    "answers": "[\"soñar\"]"
+  },
+  {
+    "id": 132,
+    "answers": "[\"deuda\"]"
+  },
+  {
+    "id": 120,
+    "answers": "[\"veo\"]"
+  },
+  {
+    "id": 99,
+    "answers": "[\"bajar\"]"
+  },
+  {
+    "id": 130,
+    "answers": "[\"entonces\"]"
+  },
+  {
+    "id": 133,
+    "answers": "[\"perder peso\"]"
+  },
+  {
+    "id": 91,
+    "answers": "[\"llevar\"]"
+  },
+  {
+    "id": 98,
+    "answers": "[\"subir\"]"
+  },
+  {
+    "id": 145,
+    "answers": "[\"tira\"]"
+  },
+  {
+    "id": 115,
+    "answers": "[\"dar la mano\"]"
+  },
+  {
+    "id": 146,
+    "answers": "[\"trozo\"]"
+  },
+  {
+    "id": 121,
+    "answers": "[\"parecer\"]"
+  },
+  {
+    "id": 134,
+    "answers": "[\"los demás\"]"
+  },
+  {
+    "id": 110,
+    "answers": "[\"por lo menos\"]"
+  },
+  {
+    "id": 147,
+    "answers": "[\"podré\"]"
+  },
+  {
+    "id": 93,
+    "answers": "[\"cuánto?\"]"
+  },
+  {
+    "id": 150,
+    "answers": "[\"desarrollo\"]"
+  },
+  {
+    "id": 151,
+    "answers": "[\"barato\"]"
+  },
+  {
+    "id": 149,
+    "answers": "[\"préstamo\"]"
+  },
+  {
+    "id": 148,
+    "answers": "[\"sortear\"]"
+  },
+  {
+    "id": 43,
+    "answers": "[\"aprender\"]"
+  },
+  {
+    "id": 100,
+    "answers": "[\"alto\"]"
+  },
+  {
+    "id": 137,
+    "answers": "[\"por eso\"]"
+  },
+  {
+    "id": 117,
+    "answers": "[\"yo hago\", \"hago\"]"
+  },
+  {
+    "id": 154,
+    "answers": "[\"nunca\"]"
+  },
+  {
+    "id": 155,
+    "answers": "[\"esta vez\"]"
+  },
+  {
+    "id": 153,
+    "answers": "[\"ola\"]"
+  },
+  {
+    "id": 152,
+    "answers": "[\"reemplazar\"]"
+  },
+  {
+    "id": 157,
+    "answers": "[\"orgullo\"]"
+  },
+  {
+    "id": 156,
+    "answers": "[\"amenaza\"]"
+  }
+]

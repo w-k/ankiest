@@ -1,9 +1,10 @@
+import { Answer } from "@prisma/client"
 import { Change, diffChars } from "diff"
 import { ThumbDownIcon } from "./icons"
 
 export interface DiffComponentProps {
   given: string
-  correct: string[]
+  correct: Answer[]
 }
 
 const mapChanges = (changes: Change[]) => {
@@ -26,7 +27,9 @@ const mapChanges = (changes: Change[]) => {
 
 export const Diff = (props: DiffComponentProps) => {
   // TODO: display the closest match if there are multiple correct answers
-  const charChanges = diffChars(props.correct[0]!.trim(), props.given.trim(), { ignoreCase: true })
+  const charChanges = diffChars(props.correct[0]!.text.trim(), props.given.trim(), {
+    ignoreCase: true,
+  })
   console.log(JSON.stringify(charChanges))
   const limit = 4
   const addedCount = charChanges.reduce((acc, cur) => (cur.added ? acc + (cur.count || 0) : acc), 0)

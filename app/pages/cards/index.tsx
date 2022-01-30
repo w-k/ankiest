@@ -1,9 +1,12 @@
 import { Suspense } from "react"
 import { Head, Link, usePaginatedQuery, useRouter, BlitzPage, Routes } from "blitz"
-import Layout from "app/core/layouts/Layout"
 import getCards from "app/cards/queries/getCards"
 import { Button } from "app/components/Button"
 import BannerLayout from "app/core/layouts/BannerLayout"
+import { EditableQuestion } from "app/components/EditableQuestion"
+import { EditableAnswer } from "app/components/EditableAnswer"
+import { Answer } from "@prisma/client"
+import { CardWithAnswers } from "app/components/CardWithAnswers"
 
 const ITEMS_PER_PAGE = 100
 
@@ -32,10 +35,20 @@ export const CardsList = () => {
         </thead>
 
         <tbody>
-          {cards.map((card) => (
+          {cards.map((card: CardWithAnswers) => (
             <tr className="odd:bg-gray-100" key={card.id}>
-              <td className="px-5">{card.question}</td>
-              <td className="px-5">{card.answers}</td>
+              <td className="px-5">
+                <EditableQuestion card={card} />
+              </td>
+              <td className="px-5">
+                <ul>
+                  {card.answers.map((answer: Answer) => (
+                    <li key={answer.id}>
+                      <EditableAnswer answer={answer} />
+                    </li>
+                  ))}
+                </ul>
+              </td>
               <td className="px-5">{card.nextReview ? card.nextReview.toDateString() : ""}</td>
               <td className="px-5">
                 <Button

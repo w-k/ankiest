@@ -1,6 +1,5 @@
 import { Suspense } from "react"
 import { Head, Link, useRouter, useQuery, useMutation, useParam, BlitzPage, Routes } from "blitz"
-import Layout from "app/core/layouts/Layout"
 import getCard from "app/cards/queries/getCard"
 import updateCard from "app/cards/mutations/updateCard"
 import { CardForm } from "app/cards/components/CardForm"
@@ -42,7 +41,7 @@ export const EditCard = () => {
                 id: card.id,
                 ...values,
               })
-              await setQueryData({ ...updated, answers: JSON.parse(updated.answers) })
+              await setQueryData(updated)
               router.push(Routes.ShowCardPage({ cardId: updated.id }))
             } catch (error: any) {
               console.error(error)

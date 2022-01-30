@@ -1,6 +1,5 @@
 import { BlitzPage, Routes } from "blitz"
 import { LinkButton } from "app/components/LinkButton"
-import Layout from "app/core/layouts/Layout"
 import BannerLayout from "app/core/layouts/BannerLayout"
 
 const Home: BlitzPage = () => {

@@ -1,16 +1,17 @@
-import { Ctx, NotFoundError, resolver } from "blitz"
+import { Ctx, NotFoundError } from "blitz"
 import db from "db"
 import { z } from "zod"
 
 const UpdateCard = z.object({
   id: z.number(),
-  userId: z.number(),
-  bucket: z.number(), // TODO: enforce range
-  lastReviewed: z.date(),
-  nextReview: z.date(),
+  question: z.string().optional(),
+  userId: z.number().optional(),
+  bucket: z.number().optional(), // TODO: enforce range
+  lastReviewed: z.date().optional(),
+  nextReview: z.date().optional(),
 })
 
-export default async function nextCard(input: z.infer<typeof UpdateCard>, ctx: Ctx) {
+export default async function updateCard(input: z.infer<typeof UpdateCard>, ctx: Ctx) {
   const { id, ...data } = input
   ctx.session.$authorize()
   const card = await db.card.findFirst({
@@ -25,6 +26,9 @@ export default async function nextCard(input: z.infer<typeof UpdateCard>, ctx: C
   const updatedCard = await db.card.update({
     where: { id },
     data,
+    include: {
+      answers: true,
+    },
   })
   return updatedCard
 }

@@ -1,13 +1,14 @@
-import { Card } from "app/cards/queries/getCard"
 import { evaluateAnswer } from "app/logic/evaluateAnswer"
 import { Button } from "./Button"
 import { Question } from "./Question"
 import { Diff } from "./Diff"
 import { ThumbDownIcon, ThumbUpIcon } from "./icons"
 import { useKeyUpEffect } from "./useKeyUpEffect"
+import { CardWithAnswers } from "./CardWithAnswers"
+import { Answer } from "@prisma/client"
 
 export interface FeedbackProps {
-  card: Card
+  card: CardWithAnswers
   givenAnswer: string
   onNext: () => any
 }
@@ -43,8 +44,8 @@ export const Feedback = (props: FeedbackProps) => {
           {!isCorrect && hasManyCorrectAnswers && <div>Correct answers:</div>}
           {!isCorrect && !hasManyCorrectAnswers && <div>Correct answer:</div>}
           <ul>
-            {otherCorrectAnswers.map((answer: string) => (
-              <li key={answer}>{answer}</li>
+            {otherCorrectAnswers.map((answer: Answer) => (
+              <li key={answer.id}>{answer.text}</li>
             ))}
           </ul>
         </div>

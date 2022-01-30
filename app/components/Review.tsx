@@ -1,4 +1,4 @@
-import { useRouter, useQuery, useParam, getAntiCSRFToken } from "blitz"
+import { useRouter, useQuery, useParam, getAntiCSRFToken, Routes } from "blitz"
 import getCard from "app/cards/queries/getCard"
 import { Feedback } from "app/components/Feedback"
 import { Prompt } from "app/components/Prompt"
@@ -45,7 +45,13 @@ export const Review = () => {
     }
     const result = await resultPromise
     const resultJson = await result.json()
-    setNextCardId(resultJson.nextCardId)
+    if (resultJson) {
+      setNextCardId(resultJson.nextCardId)
+    } else {
+      // Undefined next card means we've run out. Go to StartReview
+      // page to show the relevant message.
+      router.push(Routes.StartReview())
+    }
   }
 
   if (givenAnswer) {

@@ -1,6 +1,8 @@
-export const evaluateAnswer = (givenAnswer: string, correctAnswers: string[]) => {
+import { Answer } from "@prisma/client"
+
+export const evaluateAnswer = (givenAnswer: string, correctAnswers: Answer[]) => {
   const otherCorrectAnswers = correctAnswers.filter(
-    (correctAnswer) => correctAnswer.trim() !== givenAnswer.trim()
+    (correctAnswer) => correctAnswer.text.trim() !== givenAnswer.trim()
   )
   const isCorrect = correctAnswers.length !== otherCorrectAnswers.length
   return {

@@ -1,5 +1,4 @@
 import { Link, useRouter, useMutation, BlitzPage, Routes } from "blitz"
-import Layout from "app/core/layouts/Layout"
 import createCard from "app/cards/mutations/createCard"
 import { CardForm } from "app/cards/components/CardForm"
 import BannerLayout from "app/core/layouts/BannerLayout"

@@ -4,6 +4,7 @@ import Layout from "app/core/layouts/Layout"
 import getCard from "app/cards/queries/getCard"
 import deleteCard from "app/cards/mutations/deleteCard"
 import BannerLayout from "app/core/layouts/BannerLayout"
+import { Answer } from "@prisma/client"
 
 export const Card = () => {
   const router = useRouter()
@@ -20,8 +21,8 @@ export const Card = () => {
       <div>
         <h1>Card {card.id}</h1>
         <div>{card.question}</div>
-        {card.answers.map((answer: string) => (
-          <div key={answer}>{answer}</div>
+        {card.answers.map((answer: Answer) => (
+          <div key={answer.id}>{answer.text}</div>
         ))}
 
         <Link href={Routes.EditCardPage({ cardId: card.id })}>

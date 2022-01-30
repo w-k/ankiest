@@ -1,10 +1,10 @@
-import { Card } from "app/cards/queries/getCard"
 import { useEffect, useRef, useState } from "react"
 import { Button } from "./Button"
+import { CardWithAnswers } from "./CardWithAnswers"
 import { Question } from "./Question"
 import { useKeyUpEffect } from "./useKeyUpEffect"
 
-export const Prompt = (props: { card: Card; onSubmit: (answer: string) => any }) => {
+export const Prompt = (props: { card: CardWithAnswers; onSubmit: (answer: string) => any }) => {
   const [givenAnswer, setGivenAnswer] = useState<string>("")
   const answerTextAreaRef = useRef<HTMLTextAreaElement>(null)
   useEffect(() => {

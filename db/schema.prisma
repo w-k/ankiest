@@ -70,11 +70,22 @@ model Card {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   question     String
-  answers      String
   bucket       Int
   lastReviewed DateTime?
   nextReview   DateTime?
 
   user   User @relation(fields: [userId], references: [id])
   userId Int
+
+  answers Answer[]
+}
+
+model Answer {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  text      String
+
+  card   Card @relation(fields: [cardId], references: [id])
+  cardId Int
 }

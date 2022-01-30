@@ -1,6 +1,6 @@
+import { Card } from "@prisma/client"
 import { Button } from "app/components/Button"
 import { useRef, useState } from "react"
-import { Card } from "../queries/getCard"
 
 interface CardFormProps {
   onSubmit: (options: { question: string; answers: string[] }) => any
