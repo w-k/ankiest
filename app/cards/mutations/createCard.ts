@@ -10,7 +10,6 @@ const CreateCard = z.object({
 export default async function createCard(input: z.infer<typeof CreateCard>, ctx: Ctx) {
   ctx.session.$authorize()
   const { question, answers } = input
-  debugger
   const card = await db.card.create({
     data: {
       question,

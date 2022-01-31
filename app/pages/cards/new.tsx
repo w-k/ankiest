@@ -14,8 +14,8 @@ const NewCardPage: BlitzPage = () => {
       <CardForm
         onSubmit={async (values) => {
           try {
-            const card = await createCardMutation(values)
-            router.push(Routes.ShowCardPage({ cardId: card.id }))
+            await createCardMutation(values)
+            router.push(Routes.NewCardPage())
           } catch (error: any) {
             console.error(error)
           }
