@@ -1,26 +1,39 @@
 import { Suspense } from "react"
-import { Head, Link, usePaginatedQuery, useRouter, BlitzPage, Routes } from "blitz"
+import { Head, Link, usePaginatedQuery, useRouter, BlitzPage, Routes, useMutation } from "blitz"
 import getCards from "app/cards/queries/getCards"
-import { Button } from "app/components/Button"
 import BannerLayout from "app/core/layouts/BannerLayout"
 import { EditableQuestion } from "app/components/EditableQuestion"
 import { EditableAnswer } from "app/components/EditableAnswer"
-import { Answer } from "@prisma/client"
+import { Answer, Card } from "@prisma/client"
 import { CardWithAnswers } from "app/components/CardWithAnswers"
+import { DeleteIcon } from "app/components/icons"
+import deleteCard from "app/cards/mutations/deleteCard"
 
 const ITEMS_PER_PAGE = 100
 
 export const CardsList = () => {
   const router = useRouter()
   const page = Number(router.query.page) || 0
-  const [{ cards, hasMore }] = usePaginatedQuery(getCards, {
+  const [{ cards, hasMore }, { setQueryData }] = usePaginatedQuery(getCards, {
     orderBy: { id: "asc" },
     skip: ITEMS_PER_PAGE * page,
     take: ITEMS_PER_PAGE,
   })
+  const [deleteMutation] = useMutation(deleteCard)
 
   const goToPreviousPage = () => router.push({ query: { page: page - 1 } })
   const goToNextPage = () => router.push({ query: { page: page + 1 } })
+  const handleDelete = async (cardId: number) => {
+    await deleteMutation({ id: cardId })
+    setQueryData((oldData) =>
+      oldData
+        ? {
+            ...oldData,
+            cards: oldData.cards.filter((card: Card) => card.id !== cardId),
+          }
+        : { cards: [], hasMore: false }
+    )
+  }
 
   return (
     <div>
@@ -51,22 +64,9 @@ export const CardsList = () => {
               </td>
               <td className="px-5">{card.nextReview ? card.nextReview.toDateString() : ""}</td>
               <td className="px-5">
-                <Button
-                  label="Edit"
-                  onClick={() => {
-                    // TODO
-                    // handleEdit(card.id)
-                  }}
-                />
-              </td>
-              <td className="px-5">
-                <Button
-                  label="Delete"
-                  onClick={() => {
-                    // TODO
-                    // handleDelete(card.id)
-                  }}
-                />
+                <button onClick={() => handleDelete(card.id)}>
+                  <DeleteIcon />
+                </button>
               </td>
             </tr>
           ))}

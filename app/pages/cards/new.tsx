@@ -1,7 +1,7 @@
 import { Link, useRouter, useMutation, BlitzPage, Routes } from "blitz"
 import createCard from "app/cards/mutations/createCard"
-import { CardForm } from "app/cards/components/CardForm"
 import BannerLayout from "app/core/layouts/BannerLayout"
+import { NewCard } from "app/cards/components/NewCard"
 
 const NewCardPage: BlitzPage = () => {
   const router = useRouter()
@@ -11,14 +11,10 @@ const NewCardPage: BlitzPage = () => {
     <div>
       <h1>Create New Card</h1>
 
-      <CardForm
-        onSubmit={async (values) => {
-          try {
-            await createCardMutation(values)
-            router.push(Routes.NewCardPage())
-          } catch (error: any) {
-            console.error(error)
-          }
+      <NewCard
+        onSubmit={async (card) => {
+          await createCardMutation(card)
+          router.push(Routes.NewCardPage())
         }}
       />
 

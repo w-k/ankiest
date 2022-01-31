@@ -20,6 +20,7 @@ export const Review = () => {
       setGivenAnswer(null)
       setNextCardId(null)
       router.push(nextRoute)
+      // window.location.href = nextRoute
     }
   }, [nextCardId, shouldProceed, router])
 
