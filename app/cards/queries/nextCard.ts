@@ -1,14 +1,15 @@
 import { Ctx } from "blitz"
-import db, { Card, Prisma } from "db"
+import db from "db"
 
 export default async function nextCard(_input: null, ctx: Ctx) {
   ctx.session.$authorize()
   const today = new Date().toISOString().slice(0, 10)
-  const cardIds = await db.$queryRawUnsafe<Card>(`
+  const cards = await db.$queryRawUnsafe<{ id: number }[]>(`
   SELECT
     "Card"."id"
   FROM
     "Card"
+  JOIN "Answer" on "Card"."id"="Answer"."cardId"
   WHERE
     "Card"."userId" = ${ctx.session.userId}
     and("Card"."nextReview" IS NULL
@@ -21,5 +22,16 @@ export default async function nextCard(_input: null, ctx: Ctx) {
   LIMIT 1
   `)
 
-  return cardIds[0]?.id
+  if (!cards[0]) {
+    return null
+  }
+
+  return await db.card.findFirst({
+    where: {
+      id: cards[0].id,
+    },
+    include: {
+      answers: true,
+    },
+  })
 }

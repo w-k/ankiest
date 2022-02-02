@@ -1,6 +1,11 @@
 import { Answer } from "@prisma/client"
 
-export const evaluateAnswer = (givenAnswer: string, correctAnswers: Answer[]) => {
+export interface Evaluation {
+  isCorrect: boolean
+  otherCorrectAnswers: Answer[]
+}
+
+export const evaluateAnswer = (givenAnswer: string, correctAnswers: Answer[]): Evaluation => {
   const otherCorrectAnswers = correctAnswers.filter(
     (correctAnswer) => correctAnswer.text.trim() !== givenAnswer.trim()
   )

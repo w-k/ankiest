@@ -30,7 +30,6 @@ export const Diff = (props: DiffComponentProps) => {
   const charChanges = diffChars(props.correct[0]!.text.trim(), props.given.trim(), {
     ignoreCase: true,
   })
-  console.log(JSON.stringify(charChanges))
   const limit = 4
   const addedCount = charChanges.reduce((acc, cur) => (cur.added ? acc + (cur.count || 0) : acc), 0)
   const removedCount = charChanges.reduce(

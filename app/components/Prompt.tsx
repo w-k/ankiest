@@ -12,6 +12,7 @@ export const Prompt = (props: { card: CardWithAnswers; onSubmit: (answer: string
   }, [props.card])
 
   const handleSubmit = () => {
+    console.log(`[Prompt#handleSubmit]`)
     props.onSubmit(givenAnswer)
     setGivenAnswer("")
     if (answerTextAreaRef.current) {

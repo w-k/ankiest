@@ -1,4 +1,4 @@
-import { evaluateAnswer } from "app/logic/evaluateAnswer"
+import { Evaluation } from "app/logic/evaluateAnswer"
 import { Button } from "./Button"
 import { Question } from "./Question"
 import { Diff } from "./Diff"
@@ -9,14 +9,18 @@ import { Answer } from "@prisma/client"
 
 export interface FeedbackProps {
   card: CardWithAnswers
+  evaluation: Evaluation
   givenAnswer: string
   onNext: () => any
 }
 
 export const Feedback = (props: FeedbackProps) => {
-  useKeyUpEffect(props.onNext, "Enter")
+  useKeyUpEffect(() => {
+    console.log(`[Feedback#useKeyUpEffect]`)
+    props.onNext()
+  }, "Enter")
 
-  const { isCorrect, otherCorrectAnswers } = evaluateAnswer(props.givenAnswer, props.card.answers)
+  const { isCorrect, otherCorrectAnswers } = props.evaluation
   const hasManyCorrectAnswers = otherCorrectAnswers.length > 0
 
   return (

@@ -9,7 +9,7 @@ const Home: BlitzPage = () => {
         <div className="mt-10">
           <h1 className="text-xl tablet:text-lg tracking-wider p-2 mb-16">Ankiest</h1>
           <div className="flex flex-col space-y-2 p-2">
-            <LinkButton label="Start review" href={Routes.StartReview()} />
+            <LinkButton label="Start review" href={Routes.ReviewPage()} />
             <LinkButton label="Add card" href={Routes.NewCardPage()} />
             <LinkButton label="Browse" href={Routes.CardsPage()} />
             <LinkButton label="Import" href={Routes.Home()} />

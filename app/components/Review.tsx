@@ -1,62 +1,52 @@
-import { useRouter, useQuery, useParam, getAntiCSRFToken, Routes } from "blitz"
-import getCard from "app/cards/queries/getCard"
 import { Feedback } from "app/components/Feedback"
 import { Prompt } from "app/components/Prompt"
 import { useEffect, useState } from "react"
-import { evaluateAnswer } from "app/logic/evaluateAnswer"
+import { evaluateAnswer, Evaluation } from "app/logic/evaluateAnswer"
+import { CardWithAnswers } from "./CardWithAnswers"
+import { getAntiCSRFToken } from "blitz"
 
-export const Review = () => {
-  const router = useRouter()
-  const cardId = useParam("cardId", "number")
-  const [card] = useQuery(getCard, { id: cardId })
+export const Review = (props: { card: CardWithAnswers }) => {
+  const [card, setCard] = useState(props.card)
   const [givenAnswer, setGivenAnswer] = useState<string | null>(null)
-  const [nextCardId, setNextCardId] = useState<string | null>(null)
-  const [shouldProceed, setShouldProceed] = useState(false)
+  const [evaluation, setEvaluation] = useState<Evaluation | null>(null)
 
   useEffect(() => {
-    if (nextCardId && shouldProceed) {
-      const nextRoute = `/review/${nextCardId}`
-      setShouldProceed(false)
-      setGivenAnswer(null)
-      setNextCardId(null)
-      router.push(nextRoute)
-      // window.location.href = nextRoute
+    if (!givenAnswer) {
+      setEvaluation(null)
+    } else {
+      setEvaluation(evaluateAnswer(givenAnswer, card.answers))
     }
-  }, [nextCardId, shouldProceed, router])
+  }, [card, givenAnswer])
 
-  const handleNext = () => {
-    setShouldProceed(true)
-  }
-
-  const handlePromptSubmit = async (promptAnswer: string) => {
-    const { isCorrect } = evaluateAnswer(promptAnswer, card.answers)
-    const resultPromise = fetch("/api/submitAnswer", {
+  const handleNext = async () => {
+    const submitAnswerResult = await fetch("/api/submitAnswer", {
       method: "POST",
       headers: {
         "content-type": "application/json",
         "anti-csrf": getAntiCSRFToken(),
       },
-      body: JSON.stringify({ cardId, isCorrect }),
+      body: JSON.stringify({ cardId: card.id, isCorrect: evaluation?.isCorrect }),
     })
+    const resultJson = await submitAnswerResult.json()
+    setGivenAnswer(null)
+    setEvaluation(null)
+    setCard(resultJson)
+  }
+
+  const handlePromptSubmit = async (promptAnswer: string) => {
+    const { isCorrect } = evaluateAnswer(promptAnswer, card.answers)
     const shouldShowFeedback = card.answers.length > 1 || !isCorrect
     if (shouldShowFeedback) {
       setGivenAnswer(promptAnswer)
     } else {
       handleNext()
     }
-    const result = await resultPromise
-    const resultJson = await result.json()
-    if (resultJson) {
-      setNextCardId(resultJson.nextCardId)
-    } else {
-      // Undefined next card means we've run out. Go to StartReview
-      // page to show the relevant message.
-      router.push(Routes.StartReview())
-    }
   }
 
-  if (givenAnswer) {
-    return <Feedback card={card} givenAnswer={givenAnswer} onNext={handleNext} />
+  if (givenAnswer && evaluation) {
+    return (
+      <Feedback card={card} evaluation={evaluation} givenAnswer={givenAnswer} onNext={handleNext} />
+    )
   } else {
     return <Prompt card={card} onSubmit={handlePromptSubmit} />
   }
