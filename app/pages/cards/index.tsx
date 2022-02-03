@@ -37,7 +37,7 @@ const CardRow = (props: CardRowProps) => {
   }
   const handleEditModeBlur = async () => {
     setShowNewAnswerInput(false)
-    if (!answerText.length) {
+    if (answerText.length) {
       const answer = await addAnswerMutation({
         text: answerText,
         cardId: props.card.id,
