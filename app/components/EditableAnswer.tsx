@@ -39,5 +39,12 @@ export const EditableAnswer = (props: { answer: Answer }) => {
       />
     )
   }
-  return <span onClick={handleViewModeClick}>{answerText}</span>
+  return (
+    <span
+      onClick={handleViewModeClick}
+      className="border border-transparent hover:border-slate-500 round p-1"
+    >
+      {answerText}
+    </span>
+  )
 }

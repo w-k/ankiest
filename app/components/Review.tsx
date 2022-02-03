@@ -34,8 +34,8 @@ export const Review = (props: { card: CardWithAnswers }) => {
   }
 
   const handlePromptSubmit = async (promptAnswer: string) => {
-    const { isCorrect } = evaluateAnswer(promptAnswer, card.answers)
-    const shouldShowFeedback = card.answers.length > 1 || !isCorrect
+    setGivenAnswer(promptAnswer)
+    const shouldShowFeedback = card.answers.length > 1 || !evaluation?.isCorrect
     if (shouldShowFeedback) {
       setGivenAnswer(promptAnswer)
     } else {

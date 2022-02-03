@@ -40,5 +40,12 @@ export const EditableQuestion = (props: { card: Card }) => {
       />
     )
   }
-  return <span onClick={handleViewModeClick}>{question}</span>
+  return (
+    <span
+      onClick={handleViewModeClick}
+      className="border border-transparent hover:border-slate-500 round p-1"
+    >
+      {question}
+    </span>
+  )
 }

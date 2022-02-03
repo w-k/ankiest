@@ -1,4 +1,4 @@
-import { Ctx, NotFoundError, resolver } from "blitz"
+import { Ctx, NotFoundError } from "blitz"
 import db from "db"
 import { z } from "zod"
 
@@ -10,15 +10,7 @@ const UpdateAnswer = z.object({
 export default async function updateAnswer(input: z.infer<typeof UpdateAnswer>, ctx: Ctx) {
   const { id, ...data } = input
   ctx.session.$authorize()
-  // const card = await db.card.findFirst({
-  //   where: {
-  //     id: input.cardId,
-  //     userId: ctx.session.userId,
-  //   },
-  // })
-  // if (!card) {
-  //   throw new NotFoundError()
-  // }
+  // TODO: check that the answer belongs to the user
   const updateAnswer = await db.answer.update({
     where: { id },
     data,
