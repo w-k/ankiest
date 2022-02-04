@@ -4,9 +4,14 @@ import { LinkButton } from "app/components/LinkButton"
 import { Review } from "app/components/Review"
 import BannerLayout from "app/core/layouts/BannerLayout"
 import { invokeWithMiddleware, Routes, BlitzPage } from "blitz"
+import { useState } from "react"
 
 const ReviewPage: BlitzPage<{ card: CardWithAnswers }> = (props) => {
-  if (!props.card) {
+  const [card, setCard] = useState<CardWithAnswers | null>(props.card)
+  const handleNoNextCard = () => {
+    setCard(null)
+  }
+  if (!card) {
     return (
       <>
         <div>Noting to review.</div>
@@ -14,7 +19,7 @@ const ReviewPage: BlitzPage<{ card: CardWithAnswers }> = (props) => {
       </>
     )
   }
-  return <Review card={props.card} />
+  return <Review card={card} onNoNextCard={handleNoNextCard} />
 }
 
 export async function getServerSideProps(context) {

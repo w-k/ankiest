@@ -5,8 +5,10 @@ import { evaluateAnswer, Evaluation } from "app/logic/evaluateAnswer"
 import { CardWithAnswers } from "./CardWithAnswers"
 import { getAntiCSRFToken } from "blitz"
 
-export const Review = (props: { card: CardWithAnswers }) => {
+export const Review = (props: { card: CardWithAnswers; onNoNextCard: () => any }) => {
   const [card, setCard] = useState(props.card)
+  const [shouldShowNext, setShouldShowNext] = useState(false)
+  const [nextCard, setNextCard] = useState<CardWithAnswers | null>(null)
   const [givenAnswer, setGivenAnswer] = useState<string | null>(null)
   const [evaluation, setEvaluation] = useState<Evaluation | null>(null)
 
@@ -18,8 +20,22 @@ export const Review = (props: { card: CardWithAnswers }) => {
     }
   }, [card, givenAnswer])
 
+  useEffect(() => {
+    if (nextCard && shouldShowNext) {
+      setCard(nextCard)
+      setNextCard(null)
+      setShouldShowNext(false)
+      setGivenAnswer(null)
+      setEvaluation(null)
+    }
+  }, [nextCard, shouldShowNext])
+
   const handleNext = async () => {
-    const submitAnswerResult = await fetch("/api/submitAnswer", {
+    setShouldShowNext(true)
+  }
+
+  const handlePromptSubmit = async (promptAnswer: string) => {
+    const submitAnswerResultPromise = fetch("/api/submitAnswer", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -27,19 +43,12 @@ export const Review = (props: { card: CardWithAnswers }) => {
       },
       body: JSON.stringify({ cardId: card.id, isCorrect: evaluation?.isCorrect }),
     })
-    const resultJson = await submitAnswerResult.json()
-    setGivenAnswer(null)
-    setEvaluation(null)
-    setCard(resultJson)
-  }
-
-  const handlePromptSubmit = async (promptAnswer: string) => {
     setGivenAnswer(promptAnswer)
-    const shouldShowFeedback = card.answers.length > 1 || !evaluation?.isCorrect
-    if (shouldShowFeedback) {
-      setGivenAnswer(promptAnswer)
+    const resultJson = await (await submitAnswerResultPromise).json()
+    if (!resultJson) {
+      props.onNoNextCard()
     } else {
-      handleNext()
+      setNextCard(resultJson)
     }
   }
 
