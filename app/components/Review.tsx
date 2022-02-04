@@ -10,11 +10,11 @@ export const Review = (props: { card: CardWithAnswers; onNoNextCard: () => any }
   const [shouldShowNext, setShouldShowNext] = useState(false)
   const [nextCard, setNextCard] = useState<CardWithAnswers | null>(null)
   const [givenAnswer, setGivenAnswer] = useState<string | null>(null)
-  const [evaluation, setEvaluation] = useState<Evaluation | null>(null)
+  const [evaluation, setEvaluation] = useState(false)
 
   useEffect(() => {
     if (!givenAnswer) {
-      setEvaluation(null)
+      setEvaluation(false)
     } else {
       setEvaluation(evaluateAnswer(givenAnswer, card.answers))
     }
@@ -26,7 +26,7 @@ export const Review = (props: { card: CardWithAnswers; onNoNextCard: () => any }
       setNextCard(null)
       setShouldShowNext(false)
       setGivenAnswer(null)
-      setEvaluation(null)
+      setEvaluation(false)
     }
   }, [nextCard, shouldShowNext])
 
@@ -41,7 +41,7 @@ export const Review = (props: { card: CardWithAnswers; onNoNextCard: () => any }
         "content-type": "application/json",
         "anti-csrf": getAntiCSRFToken(),
       },
-      body: JSON.stringify({ cardId: card.id, isCorrect: evaluation?.isCorrect }),
+      body: JSON.stringify({ cardId: card.id, isCorrect: evaluation }),
     })
     setGivenAnswer(promptAnswer)
     const resultJson = await (await submitAnswerResultPromise).json()

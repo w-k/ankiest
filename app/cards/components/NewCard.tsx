@@ -1,7 +1,7 @@
 import { Button } from "app/components/Button"
 import { CardWithAnswers } from "app/components/CardWithAnswers"
+import { DeleteIcon } from "app/components/icons"
 import { useKeyUpEffect } from "app/components/useKeyUpEffect"
-import { Routes, useRouter } from "blitz"
 import { useEffect, useRef, useState } from "react"
 import { v4 as uuid } from "uuid"
 
@@ -21,15 +21,17 @@ const Answer = (props: { text: string; onChange: (text: string) => any; onDelete
     props.onChange(event.target.value)
   }
   return (
-    <>
+    <div className="flex">
       <textarea
         ref={answerTextAreaRef}
         className="ml-auto mr-auto mb-2 flex h-96 tablet:h-72 laptop:h-48 w-full border-solid border-2 tablet:border border-gray-600 p-8 tablet:p-4 laptop:p-2"
         value={answer}
         onChange={handleAnswerChange}
       />
-      <Button label="Delete" onClick={props.onDelete} />
-    </>
+      <button onClick={props.onDelete}>
+        <DeleteIcon />
+      </button>
+    </div>
   )
 }
 
@@ -39,15 +41,10 @@ const DEFAULT_ANSWERS = {}
 export const NewCard = (props: NewCardProps) => {
   const [question, setQuestion] = useState<string>(DEFAULT_QUESTION)
   const [answers, setAnswers] = useState<Record<string, string>>(DEFAULT_ANSWERS)
-
-  const handleQuestionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setQuestion(event.target.value)
-  }
-
-  const handleAnswerChange = (text: string, key: string) => {
+  const handleAddAnswer = () => {
     setAnswers({
       ...answers,
-      [key]: text,
+      [uuid()]: "",
     })
   }
   const handleSubmit = async () => {
@@ -59,16 +56,22 @@ export const NewCard = (props: NewCardProps) => {
     setAnswers(DEFAULT_ANSWERS)
     questionTextAreaRef.current?.focus()
   }
+  useKeyUpEffect(handleAddAnswer, "Tab")
+  useKeyUpEffect(handleSubmit, "Enter")
+
+  const handleQuestionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setQuestion(event.target.value)
+  }
+
+  const handleAnswerChange = (text: string, key: string) => {
+    setAnswers({
+      ...answers,
+      [key]: text,
+    })
+  }
   useEffect(() => {
     questionTextAreaRef.current?.focus()
   }, [])
-
-  const handleAddAnswer = () => {
-    setAnswers({
-      ...answers,
-      [uuid()]: "",
-    })
-  }
 
   const handleDelete = (id: string) => {
     delete answers[id]
@@ -96,8 +99,10 @@ export const NewCard = (props: NewCardProps) => {
           </div>
         ))}
       </div>
-      <Button label="Add Answer" onClick={handleAddAnswer} />
-      <Button label="Save" onClick={handleSubmit} />
+      <div className="flex">
+        <Button label="Save" onClick={handleSubmit} primary={true} />
+        <Button label="Add Answer" onClick={handleAddAnswer} />
+      </div>
     </>
   )
 }

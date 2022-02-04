@@ -17,12 +17,6 @@ const NewCardPage: BlitzPage = () => {
           router.push(Routes.NewCardPage())
         }}
       />
-
-      <p>
-        <Link href={Routes.CardsPage()}>
-          <a>Cards</a>
-        </Link>
-      </p>
     </div>
   )
 }

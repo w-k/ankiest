@@ -23,3 +23,7 @@ export const LogoutIcon = () => {
 export const DeleteIcon = () => {
   return <span className="material-icons">delete</span>
 }
+
+export const SwapIcon = () => {
+  return <span className="material-icons">swap_horiz</span>
+}

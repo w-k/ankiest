@@ -5,13 +5,9 @@ export interface Evaluation {
   otherCorrectAnswers: Answer[]
 }
 
-export const evaluateAnswer = (givenAnswer: string, correctAnswers: Answer[]): Evaluation => {
+export const evaluateAnswer = (givenAnswer: string, correctAnswers: Answer[]): boolean => {
   const otherCorrectAnswers = correctAnswers.filter(
     (correctAnswer) => correctAnswer.text.trim() !== givenAnswer.trim()
   )
-  const isCorrect = correctAnswers.length !== otherCorrectAnswers.length
-  return {
-    isCorrect,
-    otherCorrectAnswers,
-  }
+  return correctAnswers.length !== otherCorrectAnswers.length
 }

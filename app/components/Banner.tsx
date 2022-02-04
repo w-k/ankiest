@@ -16,7 +16,11 @@ export const Banner = () => {
         </a>
       </Link>
       <div>
-        <QuickAdd />
+        <Link href={Routes.NewCardPage()}>
+          <a>
+            <QuickAdd />
+          </a>
+        </Link>
       </div>
       <div>
         <button onClick={handleLogout}>
