@@ -101,7 +101,7 @@ export const CardsList = () => {
           <tr>
             <th className="px-5">Question</th>
             <th className="px-5">Answers</th>
-            <th className="px-5">Next review at</th>
+            <th className="px-5">Next review on</th>
             <th className="px-5"></th>
           </tr>
         </thead>
