@@ -38,10 +38,11 @@ export const Review = (props: { card: CardWithAnswers; onNoNextCard: () => any }
     })
     setGivenAnswer(promptAnswer)
     setEvaluation(isCorrect)
-    const resultJson = await (await submitAnswerResultPromise).json()
-    if (!resultJson) {
+    const submitAnswerResult = await submitAnswerResultPromise
+    if (!submitAnswerResult) {
       props.onNoNextCard()
     } else {
+      const resultJson = await submitAnswerResult.json()
       setNextCard(resultJson)
     }
   }
