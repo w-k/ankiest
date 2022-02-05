@@ -2,7 +2,7 @@ import { Suspense } from "react"
 import { Head, Link, usePaginatedQuery, useRouter, BlitzPage, Routes, useMutation } from "blitz"
 import getCards from "app/cards/queries/getCards"
 import BannerLayout from "app/core/layouts/BannerLayout"
-import { EditableQuestion } from "app/components/EditableQuestion"
+import { Question } from "app/components/Question"
 import { Card } from "@prisma/client"
 import { CardWithAnswers } from "app/components/CardWithAnswers"
 import { DeleteIcon } from "app/components/icons"
@@ -19,7 +19,7 @@ const CardRow = (props: CardRowProps) => {
   return (
     <tr className="odd:bg-gray-100 group" key={props.card.id}>
       <td className="px-5">
-        <EditableQuestion card={props.card} />
+        <Question card={props.card} editable={true} />
       </td>
       <td className="px-5">
         <MultipleEditableAnswers card={props.card} />

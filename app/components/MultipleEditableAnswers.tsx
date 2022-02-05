@@ -8,7 +8,7 @@ import { SingleEditableAnswer } from "./SingleEditableAnswer"
 
 export interface MultipleEditableAnswers {
   card: CardWithAnswers
-  highlightAnswer?: string
+  highlightAnswer?: string | null
 }
 
 export const MultipleEditableAnswers = (props: MultipleEditableAnswers) => {
