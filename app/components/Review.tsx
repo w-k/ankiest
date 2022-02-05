@@ -10,11 +10,11 @@ export const Review = (props: { card: CardWithAnswers; onNoNextCard: () => any }
   const [shouldShowNext, setShouldShowNext] = useState(false)
   const [nextCard, setNextCard] = useState<CardWithAnswers | null>(null)
   const [givenAnswer, setGivenAnswer] = useState<string | null>(null)
-  const [evaluation, setEvaluation] = useState(false)
+  const [evaluation, setEvaluation] = useState<boolean | null>(null)
 
   useEffect(() => {
-    if (!givenAnswer) {
-      setEvaluation(false)
+    if (givenAnswer === null) {
+      setEvaluation(null)
     } else {
       setEvaluation(evaluateAnswer(givenAnswer, card.answers))
     }
@@ -26,7 +26,7 @@ export const Review = (props: { card: CardWithAnswers; onNoNextCard: () => any }
       setNextCard(null)
       setShouldShowNext(false)
       setGivenAnswer(null)
-      setEvaluation(false)
+      setEvaluation(null)
     }
   }, [nextCard, shouldShowNext])
 
@@ -52,7 +52,7 @@ export const Review = (props: { card: CardWithAnswers; onNoNextCard: () => any }
     }
   }
 
-  if (givenAnswer && evaluation) {
+  if (evaluation !== null) {
     return (
       <Feedback card={card} evaluation={evaluation} givenAnswer={givenAnswer} onNext={handleNext} />
     )

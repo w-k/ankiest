@@ -27,13 +27,19 @@ export const Prompt = (props: { card: CardWithAnswers; onSubmit: (answer: string
 
   return (
     <div className="flex flex-col mr-2 ml-2 items-start">
-      <Question text={props.card.question} />
-      <textarea
-        ref={answerTextAreaRef}
-        className="ml-auto mr-auto mb-2 flex h-96 tablet:h-72 laptop:h-48 w-full border-solid border-2 tablet:border border-gray-600 p-8 tablet:p-4 laptop:p-2 rounded-md"
-        value={givenAnswer}
-        onChange={handleGivenAnswerChange}
-      />
+      <div className="ml-auto mr-auto flex h-96 tablet:h-72 laptop:h-48 w-full p-8 tablet:p-4 laptop:p-2">
+        <div className="self-end">
+          <Question card={props.card} />
+        </div>
+      </div>
+      <div className="ml-auto mr-auto flex h-96 tablet:h-72 laptop:h-48 w-full  mb-2 ">
+        <textarea
+          ref={answerTextAreaRef}
+          className="ml-auto mr-auto flex w-full border-solid border-2 tablet:border border-gray-600 p-8 tablet:p-4 laptop:p-2 rounded-md"
+          value={givenAnswer}
+          onChange={handleGivenAnswerChange}
+        />
+      </div>
       <Button primary={true} label="Submit" onClick={handleSubmit} />
     </div>
   )
