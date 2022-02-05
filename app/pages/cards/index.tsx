@@ -1,4 +1,4 @@
-import { Suspense } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { Head, Link, usePaginatedQuery, useRouter, BlitzPage, Routes, useMutation } from "blitz"
 import getCards from "app/cards/queries/getCards"
 import BannerLayout from "app/core/layouts/BannerLayout"
@@ -40,12 +40,41 @@ const CardRow = (props: CardRowProps) => {
 export const CardsList = () => {
   const router = useRouter()
   const page = Number(router.query.page) || 0
+  const [where, setWhere] = useState({})
   const [{ cards, hasMore }, { setQueryData }] = usePaginatedQuery(getCards, {
     orderBy: { id: "asc" },
     skip: ITEMS_PER_PAGE * page,
     take: ITEMS_PER_PAGE,
+    where,
   })
   const [deleteMutation] = useMutation(deleteCard)
+  const [query, setQuery] = useState("")
+  useEffect(() => {
+    if (query.length) {
+      setWhere({
+        OR: [
+          {
+            question: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+          {
+            answers: {
+              some: {
+                text: {
+                  contains: query,
+                  mode: "insensitive",
+                },
+              },
+            },
+          },
+        ],
+      })
+    } else {
+      setWhere({})
+    }
+  }, [query])
 
   const goToPreviousPage = () => router.push({ query: { page: page - 1 } })
   const goToNextPage = () => router.push({ query: { page: page + 1 } })
@@ -60,10 +89,13 @@ export const CardsList = () => {
         : { cards: [], hasMore: false }
     )
   }
-  const handleAdd = (card) => {}
+  const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value)
+  }
 
   return (
     <div>
+      <input value={query} className="border rounded mb-8 px-4 py-2" onChange={handleQueryChange} />
       <table>
         <thead>
           <tr>
@@ -98,12 +130,6 @@ const CardsPage: BlitzPage = () => {
       </Head>
 
       <div>
-        <p>
-          <Link href={Routes.NewCardPage()}>
-            <a>Create Card</a>
-          </Link>
-        </p>
-
         <Suspense fallback={<div>Loading...</div>}>
           <CardsList />
         </Suspense>
