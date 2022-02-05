@@ -43,7 +43,7 @@ const handler: BlitzApiHandler = async (req, res) => {
     },
     { req, res }
   )
-  const nextCardResult = await invokeWithMiddleware(nextCard, null, { req, res })
+  const nextCardResult = await invokeWithMiddleware(nextCard, { avoidCardId: cardId }, { req, res })
   res.status(200).json(nextCardResult)
 }
 

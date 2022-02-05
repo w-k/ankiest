@@ -23,7 +23,7 @@ const ReviewPage: BlitzPage<{ card: CardWithAnswers }> = (props) => {
 }
 
 export async function getServerSideProps(context) {
-  const nextCardResult = await invokeWithMiddleware(nextCard, null, context)
+  const nextCardResult = await invokeWithMiddleware(nextCard, {}, context)
 
   return {
     props: {

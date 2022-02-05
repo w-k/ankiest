@@ -13,14 +13,6 @@ export const Review = (props: { card: CardWithAnswers; onNoNextCard: () => any }
   const [evaluation, setEvaluation] = useState<boolean | null>(null)
 
   useEffect(() => {
-    if (givenAnswer === null) {
-      setEvaluation(null)
-    } else {
-      setEvaluation(evaluateAnswer(givenAnswer, card.answers))
-    }
-  }, [card, givenAnswer])
-
-  useEffect(() => {
     if (nextCard && shouldShowNext) {
       setCard(nextCard)
       setNextCard(null)
@@ -35,15 +27,17 @@ export const Review = (props: { card: CardWithAnswers; onNoNextCard: () => any }
   }
 
   const handlePromptSubmit = async (promptAnswer: string) => {
+    const isCorrect = evaluateAnswer(promptAnswer, card.answers)
     const submitAnswerResultPromise = fetch("/api/submitAnswer", {
       method: "POST",
       headers: {
         "content-type": "application/json",
         "anti-csrf": getAntiCSRFToken(),
       },
-      body: JSON.stringify({ cardId: card.id, isCorrect: evaluation }),
+      body: JSON.stringify({ cardId: card.id, isCorrect }),
     })
     setGivenAnswer(promptAnswer)
+    setEvaluation(isCorrect)
     const resultJson = await (await submitAnswerResultPromise).json()
     if (!resultJson) {
       props.onNoNextCard()

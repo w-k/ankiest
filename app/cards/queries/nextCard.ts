@@ -1,7 +1,11 @@
 import { Ctx } from "blitz"
 import db from "db"
 
-export default async function nextCard(_input: null, ctx: Ctx) {
+interface NextCardInput {
+  avoidCardId?: number
+}
+
+export default async function nextCard(input: NextCardInput, ctx: Ctx) {
   ctx.session.$authorize()
   const today = new Date().toISOString().slice(0, 10)
   const cards = await db.$queryRawUnsafe<{ id: number }[]>(`
@@ -18,6 +22,7 @@ export default async function nextCard(_input: null, ctx: Ctx) {
     "Card"."bucket" DESC,
     "Card"."nextReview" IS NULL DESC,
     date("Card"."nextReview"),
+    "Card"."id" = ${input.avoidCardId ?? "NULL"} ASC,
     random() ASC
   LIMIT 1
   `)
