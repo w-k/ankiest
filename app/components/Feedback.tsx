@@ -33,9 +33,11 @@ export const Feedback = (props: FeedbackProps) => {
           {showCorrection ? (
             <Diff given={props.givenAnswer!} correct={props.card.answers} />
           ) : (
-            <span className="text-red-500">
-              <ThumbDownIcon />
-            </span>
+            !props.evaluation && (
+              <span className="text-red-500">
+                <ThumbDownIcon />
+              </span>
+            )
           )}
           <MultipleEditableAnswers card={props.card} highlightAnswer={props.givenAnswer} />
         </div>
