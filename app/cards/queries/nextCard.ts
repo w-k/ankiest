@@ -1,3 +1,4 @@
+import { CardWithAnswers } from "app/components/CardWithAnswers"
 import { Ctx } from "blitz"
 import db from "db"
 
@@ -5,7 +6,11 @@ interface NextCardInput {
   avoidCardId?: number
 }
 
-export default async function nextCard(input: NextCardInput, ctx: Ctx) {
+interface NextCardResponse {
+  card?: CardWithAnswers
+}
+
+export default async function nextCard(input: NextCardInput, ctx: Ctx): Promise<NextCardResponse> {
   ctx.session.$authorize()
   const today = new Date().toISOString().slice(0, 10)
   const cards = await db.$queryRawUnsafe<{ id: number }[]>(`
@@ -28,10 +33,10 @@ export default async function nextCard(input: NextCardInput, ctx: Ctx) {
   `)
 
   if (!cards[0]) {
-    return null
+    return {}
   }
 
-  return await db.card.findFirst({
+  const card = await db.card.findFirst({
     where: {
       id: cards[0].id,
     },
@@ -39,4 +44,10 @@ export default async function nextCard(input: NextCardInput, ctx: Ctx) {
       answers: true,
     },
   })
+
+  if (!card) {
+    return {}
+  }
+
+  return { card }
 }

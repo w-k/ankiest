@@ -6,7 +6,11 @@ import BannerLayout from "app/core/layouts/BannerLayout"
 import { invokeWithMiddleware, Routes, BlitzPage } from "blitz"
 import { useState } from "react"
 
-const ReviewPage: BlitzPage<{ card: CardWithAnswers }> = (props) => {
+interface ReviewPageProps {
+  card: CardWithAnswers | null
+}
+
+const ReviewPage: BlitzPage<ReviewPageProps> = (props) => {
   const [card, setCard] = useState<CardWithAnswers | null>(props.card)
   const handleNoNextCard = () => {
     setCard(null)
@@ -24,10 +28,9 @@ const ReviewPage: BlitzPage<{ card: CardWithAnswers }> = (props) => {
 
 export async function getServerSideProps(context) {
   const nextCardResult = await invokeWithMiddleware(nextCard, {}, context)
-
   return {
     props: {
-      card: nextCardResult,
+      card: nextCardResult.card,
     },
   }
 }
