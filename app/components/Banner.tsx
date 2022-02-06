@@ -11,21 +11,19 @@ export const Banner = () => {
   return (
     <div className="flex flex-row justify-between text-periwinkle-100 bg-periwinkle-500 px-2 py-1">
       <Link href={Routes.Home()}>
-        <a>
+        <a className="hover:text-blushPink-200">
           <HomeIcon />
         </a>
       </Link>
-      <div>
-        <Link href={Routes.NewCardPage()}>
-          <a>
-            <QuickAdd />
-          </a>
-        </Link>
-      </div>
-      <div>
-        <button onClick={handleLogout}>
-          <LogoutIcon />
-        </button>
+      <div className="flex space-x-8">
+        <div className="hover:text-blushPink-200">
+          <QuickAdd />
+        </div>
+        <div>
+          <button className="hover:text-blushPink-200" onClick={handleLogout}>
+            <LogoutIcon />
+          </button>
+        </div>
       </div>
     </div>
   )

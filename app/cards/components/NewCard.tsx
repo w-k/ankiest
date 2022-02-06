@@ -99,8 +99,8 @@ export const NewCard = (props: NewCardProps) => {
           </div>
         ))}
       </div>
-      <div className="flex">
-        <Button label="Save" onClick={handleSubmit} primary={true} />
+      <div className="flex space-x-2">
+        <Button label="Save Card" onClick={handleSubmit} primary={true} />
         <Button label="Add Answer" onClick={handleAddAnswer} />
       </div>
     </>

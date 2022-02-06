@@ -1,4 +1,4 @@
-import { Link, useRouter, useMutation, BlitzPage, Routes } from "blitz"
+import { useRouter, useMutation, BlitzPage, Routes } from "blitz"
 import createCard from "app/cards/mutations/createCard"
 import BannerLayout from "app/core/layouts/BannerLayout"
 import { NewCard } from "app/cards/components/NewCard"
