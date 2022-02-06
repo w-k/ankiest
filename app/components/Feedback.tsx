@@ -15,7 +15,6 @@ export interface FeedbackProps {
 
 export const Feedback = (props: FeedbackProps) => {
   useKeyUpEffect(() => {
-    console.log(`[Feedback#useKeyUpEffect]`)
     props.onNext()
   }, "Enter")
 

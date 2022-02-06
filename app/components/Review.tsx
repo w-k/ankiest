@@ -1,12 +1,48 @@
 import { Feedback } from "app/components/Feedback"
 import { Prompt } from "app/components/Prompt"
 import { useEffect, useState } from "react"
-import { evaluateAnswer, Evaluation } from "app/logic/evaluateAnswer"
+import { evaluateAnswer } from "app/logic/evaluateAnswer"
 import { CardWithAnswers } from "./CardWithAnswers"
 import { getAntiCSRFToken } from "blitz"
+import { NextCardResponse, Stats } from "app/cards/queries/nextCardAndStats"
 
-export const Review = (props: { card: CardWithAnswers; onNoNextCard: () => any }) => {
+export interface ReviewProps {
+  card: CardWithAnswers
+  stats: Stats
+  onNoNextCard: () => any
+}
+
+const ProgressBar = (props: { fraction: number }) => {
+  return (
+    <div className="w-full bg-blushPink-50 h-5 rounded">
+      <div
+        className="h-full bg-blushPink-500 rounded"
+        style={{
+          width: `${props.fraction * 100}%`,
+        }}
+      ></div>
+    </div>
+  )
+}
+
+const Progress = (props: { stats: Stats }) => {
+  const completedFraction =
+    props.stats.reviewedToday / (props.stats.reviewedToday + props.stats.leftToReview)
+  const percentage = `${Math.round(completedFraction * 100)}%`
+  return (
+    <div>
+      <div>{"Today's progress:"}</div>
+      <div className="flex">
+        <ProgressBar fraction={completedFraction} />
+        <div className="w-12 text-right">{percentage}</div>
+      </div>
+    </div>
+  )
+}
+
+export const Review = (props: ReviewProps) => {
   const [card, setCard] = useState(props.card)
+  const [stats, setStats] = useState(props.stats)
   const [shouldShowNext, setShouldShowNext] = useState(false)
   const [nextCard, setNextCard] = useState<CardWithAnswers | null>(null)
   const [givenAnswer, setGivenAnswer] = useState<string | null>(null)
@@ -25,7 +61,7 @@ export const Review = (props: { card: CardWithAnswers; onNoNextCard: () => any }
         props.onNoNextCard()
       }
     }
-  }, [nextCard, shouldShowNext])
+  }, [nextCard, shouldShowNext, nothingToReview, props])
 
   const handleNext = async () => {
     setShouldShowNext(true)
@@ -44,19 +80,27 @@ export const Review = (props: { card: CardWithAnswers; onNoNextCard: () => any }
     setGivenAnswer(promptAnswer)
     setEvaluation(isCorrect)
     const submitAnswerResult = await submitAnswerResultPromise
-    const submitAnswerResultJson = await submitAnswerResult.json()
+    const submitAnswerResultJson: NextCardResponse = await submitAnswerResult.json()
+    setStats(submitAnswerResultJson.stats)
     if (!submitAnswerResultJson.card) {
       setNothingToReview(true)
     } else {
       setNextCard(submitAnswerResultJson.card)
     }
   }
-
-  if (evaluation !== null) {
-    return (
-      <Feedback card={card} evaluation={evaluation} givenAnswer={givenAnswer} onNext={handleNext} />
-    )
-  } else {
-    return <Prompt card={card} onSubmit={handlePromptSubmit} />
-  }
+  return (
+    <>
+      <Progress stats={stats} />
+      {evaluation === null ? (
+        <Prompt card={card} onSubmit={handlePromptSubmit} />
+      ) : (
+        <Feedback
+          card={card}
+          evaluation={evaluation}
+          givenAnswer={givenAnswer}
+          onNext={handleNext}
+        />
+      )}
+    </>
+  )
 }

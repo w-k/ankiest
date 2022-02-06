@@ -1,4 +1,4 @@
-import nextCard from "app/cards/queries/nextCard"
+import nextCardAndStats, { NextCardResponse } from "app/cards/queries/nextCardAndStats"
 import { CardWithAnswers } from "app/components/CardWithAnswers"
 import { LinkButton } from "app/components/LinkButton"
 import { Review } from "app/components/Review"
@@ -6,14 +6,10 @@ import BannerLayout from "app/core/layouts/BannerLayout"
 import { invokeWithMiddleware, Routes, BlitzPage } from "blitz"
 import { useState } from "react"
 
-interface ReviewPageProps {
-  card: CardWithAnswers | null
-}
-
-const ReviewPage: BlitzPage<ReviewPageProps> = (props) => {
-  const [card, setCard] = useState<CardWithAnswers | null>(props.card)
+const ReviewPage: BlitzPage<NextCardResponse> = (props) => {
+  const [card, setCard] = useState<CardWithAnswers | undefined>(props.card)
   const handleNoNextCard = () => {
-    setCard(null)
+    setCard(undefined)
   }
   if (!card) {
     return (
@@ -23,15 +19,17 @@ const ReviewPage: BlitzPage<ReviewPageProps> = (props) => {
       </>
     )
   }
-  return <Review card={card} onNoNextCard={handleNoNextCard} />
+  return (
+    <>
+      <Review card={card} stats={props.stats} onNoNextCard={handleNoNextCard} />
+    </>
+  )
 }
 
 export async function getServerSideProps(context) {
-  const nextCardResult = await invokeWithMiddleware(nextCard, {}, context)
+  const nextCardResult = await invokeWithMiddleware(nextCardAndStats, {}, context)
   return {
-    props: {
-      card: nextCardResult.card,
-    },
+    props: nextCardResult,
   }
 }
 

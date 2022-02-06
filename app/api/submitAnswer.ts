@@ -1,6 +1,6 @@
 import updateCard from "app/cards/mutations/updateCard"
 import getCard from "app/cards/queries/getCard"
-import nextCard from "app/cards/queries/nextCard"
+import nextCardAndStats from "app/cards/queries/nextCardAndStats"
 import { BlitzApiHandler, getSession, invokeWithMiddleware, NotFoundError } from "blitz"
 import addDays from "date-fns/addDays"
 
@@ -43,7 +43,11 @@ const handler: BlitzApiHandler = async (req, res) => {
     },
     { req, res }
   )
-  const nextCardResult = await invokeWithMiddleware(nextCard, { avoidCardId: cardId }, { req, res })
+  const nextCardResult = await invokeWithMiddleware(
+    nextCardAndStats,
+    { avoidCardId: cardId },
+    { req, res }
+  )
   res.status(200).json(nextCardResult)
 }
 
