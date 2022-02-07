@@ -26,12 +26,13 @@ const ProgressBar = (props: { fraction: number }) => {
 }
 
 const Progress = (props: { stats: Stats }) => {
-  const completedFraction =
-    props.stats.reviewedToday / (props.stats.reviewedToday + props.stats.leftToReview)
+  const done = props.stats.reviewedToday
+  const total = props.stats.reviewedToday + props.stats.leftToReview
+  const completedFraction = done / total
   const percentage = `${Math.round(completedFraction * 100)}%`
   return (
     <div>
-      <div>{"Today's progress:"}</div>
+      <div>{`Today's progress: ${done}/${total}`}</div>
       <div className="flex">
         <ProgressBar fraction={completedFraction} />
         <div className="w-12 text-right">{percentage}</div>

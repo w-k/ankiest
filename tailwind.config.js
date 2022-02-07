@@ -3,10 +3,10 @@ module.exports = {
   content: ["{pages,app,components}/**/*.{js,ts,jsx,tsx}"],
   theme: {
     fontSize: {
-      sm: "0.9rem",
-      md: "1.75rem",
-      lg: "6rem",
-      xl: "8rem",
+      sm: "1rem",
+      md: "1.4rem",
+      lg: "1.6rem",
+      xl: "2rem",
     },
     minHeight: {
       "1/2": "50%",

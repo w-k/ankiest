@@ -1,5 +1,4 @@
-import { BlitzPage, Routes } from "blitz"
-import { LinkButton } from "app/components/LinkButton"
+import { BlitzPage, Link, Routes } from "blitz"
 import BannerLayout from "app/core/layouts/BannerLayout"
 
 const Home: BlitzPage = () => {
@@ -9,10 +8,15 @@ const Home: BlitzPage = () => {
         <div className="mt-10">
           <h1 className="text-xl tablet:text-lg tracking-wider p-2 mb-16">Ankiest</h1>
           <div className="flex flex-col space-y-2 p-2">
-            <LinkButton label="Start review" href={Routes.ReviewPage()} />
-            <LinkButton label="Add card" href={Routes.NewCardPage()} />
-            <LinkButton label="Browse" href={Routes.CardsPage()} />
-            <LinkButton label="Import" href={Routes.Home()} />
+            <Link href={Routes.ReviewPage()}>
+              <a>Start Review</a>
+            </Link>
+            <Link href={Routes.NewCardPage()}>
+              <a>Add Card</a>
+            </Link>
+            <Link href={Routes.CardsPage()}>
+              <a>Browse</a>
+            </Link>
           </div>
         </div>
       </div>

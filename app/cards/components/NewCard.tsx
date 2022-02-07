@@ -2,6 +2,9 @@ import { Button } from "app/components/Button"
 import { CardWithAnswers } from "app/components/CardWithAnswers"
 import { DeleteIcon } from "app/components/icons"
 import { useKeyUpEffect } from "app/components/useKeyUpEffect"
+import updateCurrentUser from "app/users/mutations/updateCurrentUser"
+import getCurrentUser from "app/users/queries/getCurrentUser"
+import { useMutation, useQuery } from "blitz"
 import { useEffect, useRef, useState } from "react"
 import { v4 as uuid } from "uuid"
 
@@ -21,14 +24,14 @@ const Answer = (props: { text: string; onChange: (text: string) => any; onDelete
     props.onChange(event.target.value)
   }
   return (
-    <div className="flex">
+    <div className="flex group">
       <textarea
         ref={answerTextAreaRef}
-        className="ml-auto mr-auto mb-2 flex h-96 tablet:h-72 laptop:h-48 w-full border-solid border-2 tablet:border border-gray-600 p-8 tablet:p-4 laptop:p-2"
+        className="ml-auto mr-auto mb-2 flex h-24 w-full border-solid border-2 tablet:border border-gray-600 p-8 tablet:p-4 laptop:p-2"
         value={answer}
         onChange={handleAnswerChange}
       />
-      <button onClick={props.onDelete}>
+      <button onClick={props.onDelete} className="text-gray-300 group-hover:text-gray-600">
         <DeleteIcon />
       </button>
     </div>
@@ -41,6 +44,13 @@ const DEFAULT_ANSWERS = {}
 export const NewCard = (props: NewCardProps) => {
   const [question, setQuestion] = useState<string>(DEFAULT_QUESTION)
   const [answers, setAnswers] = useState<Record<string, string>>(DEFAULT_ANSWERS)
+  const [currentUser] = useQuery(getCurrentUser, { createInverse: true })
+  const [updateCurrentUserMutation] = useMutation(updateCurrentUser)
+  const [createInverse, setCreateInverse] = useState((currentUser as any).createInverse)
+  const handleCreateInverseChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCreateInverse(event.target.checked)
+    updateCurrentUserMutation({ createInverse: event.target.checked })
+  }
   const handleAddAnswer = () => {
     setAnswers({
       ...answers,
@@ -48,10 +58,23 @@ export const NewCard = (props: NewCardProps) => {
     })
   }
   const handleSubmit = async () => {
-    await props.onSubmit({
-      question,
-      answers: Object.values(answers),
-    })
+    const promises = [
+      props.onSubmit({
+        question,
+        answers: Object.values(answers),
+      }),
+    ]
+    if (createInverse) {
+      Object.values(answers).forEach((answer: string) => {
+        promises.push(
+          props.onSubmit({
+            question: answer,
+            answers: [question],
+          })
+        )
+      })
+    }
+    await Promise.all(promises)
     setQuestion(DEFAULT_QUESTION)
     setAnswers(DEFAULT_ANSWERS)
     questionTextAreaRef.current?.focus()
@@ -75,7 +98,7 @@ export const NewCard = (props: NewCardProps) => {
 
   const handleDelete = (id: string) => {
     delete answers[id]
-    setAnswers(answers)
+    setAnswers({ ...answers })
   }
 
   // const answerTextAreaRef = useRef<HTMLTextAreaElement>(null)
@@ -85,7 +108,7 @@ export const NewCard = (props: NewCardProps) => {
       <div className="flex flex-col mr-2 ml-2">
         <textarea
           ref={questionTextAreaRef}
-          className="ml-auto mr-auto mb-8 flex h-96 tablet:h-72 laptop:h-48 w-full border-solid border-2 tablet:border border-gray-600 p-8 tablet:p-4 laptop:p-2"
+          className="ml-auto mr-auto mb-8 flex h-24 w-full border-solid border-2 tablet:border border-gray-600 p-8 tablet:p-4 laptop:p-2"
           value={question}
           onChange={handleQuestionChange}
         />
@@ -99,9 +122,18 @@ export const NewCard = (props: NewCardProps) => {
           </div>
         ))}
       </div>
-      <div className="flex space-x-2">
+      <div className="flex space-x-4 items-baseline">
         <Button label="Save Card" onClick={handleSubmit} primary={true} />
         <Button label="Add Answer" onClick={handleAddAnswer} />
+        <div className="flex items-baseline space-x-2">
+          <input
+            type="checkbox"
+            name="createInverse"
+            checked={createInverse}
+            onChange={handleCreateInverseChange}
+          />
+          <label htmlFor="createInverse">Create inverse</label>
+        </div>
       </div>
     </>
   )

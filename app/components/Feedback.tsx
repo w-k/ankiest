@@ -22,12 +22,12 @@ export const Feedback = (props: FeedbackProps) => {
 
   return (
     <div className="flex flex-col mr-2 ml-2 items-start">
-      <div className="ml-auto mr-auto flex h-96 tablet:h-72 laptop:h-48 w-full p-8 tablet:p-4 laptop:p-2">
+      <div className="ml-auto mr-auto flex h-48 w-full p-8 tablet:p-4 laptop:p-2">
         <div className="self-end">
           <Question card={props.card} editable={true} />
         </div>
       </div>
-      <div className="ml-auto mr-auto flex h-96 tablet:h-72 laptop:h-48 w-full p-8 tablet:p-4 laptop:p-2 mb-2">
+      <div className="ml-auto mr-auto flex h-48 w-full p-8 tablet:p-4 laptop:p-2 mb-2">
         <div className="flex flex-col">
           {showCorrection ? (
             <Diff given={props.givenAnswer!} correct={props.card.answers} />
