@@ -52,7 +52,7 @@ export default async function nextCardAndStats(
       FROM
         "Card"
       WHERE
-        date("Card"."nextReview") = date(now())
+        date("Card"."nextReview") = date(now()) OR date("Card"."nextReview") IS NIL
     ) AS "leftToReview", 
     (
       SELECT
