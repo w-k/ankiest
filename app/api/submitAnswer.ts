@@ -30,7 +30,7 @@ const handler: BlitzApiHandler = async (req, res) => {
   if (!card) {
     throw new NotFoundError()
   }
-  const newBucket = isCorrect ? Math.min(6, card.bucket + 1) : Math.max(1, card.bucket - 1)
+  const newBucket = isCorrect ? Math.min(6, card.bucket + 1) : 1
   const delay = bucketDelay[newBucket]
   await invokeWithMiddleware(
     updateCard,
