@@ -1,7 +1,7 @@
 import { NewCard } from "app/cards/components/NewCard"
 import createCard from "app/cards/mutations/createCard"
 import { useMutation } from "blitz"
-import { useState } from "react"
+import { Suspense, useState } from "react"
 import { AddIcon } from "./icons"
 
 const QuickAddModal = (props: { onDeactivate: () => any }) => {
@@ -22,7 +22,9 @@ const QuickAddModal = (props: { onDeactivate: () => any }) => {
         className="bg-white z-20 w-1/3 m-auto mt-40 border rounded shadow p-4"
         onClick={handleInnerClick}
       >
-        <NewCard onSubmit={handleSubmit} />
+        <Suspense fallback="Loading...">
+          <NewCard onSubmit={handleSubmit} />
+        </Suspense>
       </div>
     </div>
   )

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { Button } from "./Button"
 import { CardWithAnswers } from "./CardWithAnswers"
 import { Question } from "./Question"
-import { useKeyUpEffect } from "./useKeyUpEffect"
+import { useKeyPressEffect } from "./useKeyDownEffect"
 
 export const Prompt = (props: { card: CardWithAnswers; onSubmit: (answer: string) => any }) => {
   const [givenAnswer, setGivenAnswer] = useState<string>("")
@@ -19,7 +19,7 @@ export const Prompt = (props: { card: CardWithAnswers; onSubmit: (answer: string
       answerTextAreaRef.current.value = ""
     }
   }
-  useKeyUpEffect(handleSubmit, "Enter")
+  useKeyPressEffect(handleSubmit, "Enter", answerTextAreaRef)
 
   const handleGivenAnswerChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setGivenAnswer(event.target.value)

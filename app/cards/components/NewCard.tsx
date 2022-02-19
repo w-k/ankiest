@@ -1,7 +1,7 @@
 import { Button } from "app/components/Button"
 import { CardWithAnswers } from "app/components/CardWithAnswers"
 import { DeleteIcon } from "app/components/icons"
-import { useKeyUpEffect } from "app/components/useKeyUpEffect"
+import { useKeyDownEffect, useKeyPressEffect } from "app/components/useKeyDownEffect"
 import updateCurrentUser from "app/users/mutations/updateCurrentUser"
 import getCurrentUser from "app/users/queries/getCurrentUser"
 import { useMutation, useQuery } from "blitz"
@@ -13,12 +13,17 @@ interface NewCardProps {
   card?: CardWithAnswers
 }
 
-const Answer = (props: { text: string; onChange: (text: string) => any; onDelete: () => any }) => {
+interface AnswerProps {
+  text: string
+  onChange: (text: string) => any
+  onDelete: () => any
+  onSubmit: () => any
+}
+
+const Answer = (props: AnswerProps) => {
   const [answer, setAnswer] = useState(props.text)
   const answerTextAreaRef = useRef<HTMLTextAreaElement>(null)
-  useEffect(() => {
-    answerTextAreaRef.current?.focus()
-  }, [])
+  useKeyPressEffect(props.onSubmit, "Enter", answerTextAreaRef)
   const handleAnswerChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setAnswer(event.target.value)
     props.onChange(event.target.value)
@@ -79,8 +84,9 @@ export const NewCard = (props: NewCardProps) => {
     setAnswers(DEFAULT_ANSWERS)
     questionTextAreaRef.current?.focus()
   }
-  useKeyUpEffect(handleAddAnswer, "Tab")
-  useKeyUpEffect(handleSubmit, "Enter")
+  const questionTextAreaRef = useRef<HTMLTextAreaElement>(null)
+
+  useKeyDownEffect(handleAddAnswer, "Tab", questionTextAreaRef)
 
   const handleQuestionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setQuestion(event.target.value)
@@ -101,8 +107,6 @@ export const NewCard = (props: NewCardProps) => {
     setAnswers({ ...answers })
   }
 
-  // const answerTextAreaRef = useRef<HTMLTextAreaElement>(null)
-  const questionTextAreaRef = useRef<HTMLTextAreaElement>(null)
   return (
     <>
       <div className="flex flex-col mr-2 ml-2">
@@ -118,6 +122,7 @@ export const NewCard = (props: NewCardProps) => {
               text={text}
               onChange={(text) => handleAnswerChange(text, key)}
               onDelete={() => handleDelete(key)}
+              onSubmit={handleSubmit}
             />
           </div>
         ))}

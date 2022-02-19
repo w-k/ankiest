@@ -1,10 +1,10 @@
 import { Button } from "./Button"
 import { Diff } from "./Diff"
-import { useKeyUpEffect } from "./useKeyUpEffect"
 import { CardWithAnswers } from "./CardWithAnswers"
 import { MultipleEditableAnswers } from "./MultipleEditableAnswers"
 import { Question } from "./Question"
 import { ThumbDownIcon } from "./icons"
+import { useEffect, useRef } from "react"
 
 export interface FeedbackProps {
   card: CardWithAnswers
@@ -14,9 +14,10 @@ export interface FeedbackProps {
 }
 
 export const Feedback = (props: FeedbackProps) => {
-  useKeyUpEffect(() => {
-    props.onNext()
-  }, "Enter")
+  const nextButtonRef = useRef<HTMLButtonElement>(null)
+  useEffect(() => {
+    nextButtonRef.current?.focus()
+  }, [])
 
   const showCorrection = props.givenAnswer && !props.evaluation
 
@@ -41,7 +42,7 @@ export const Feedback = (props: FeedbackProps) => {
           <MultipleEditableAnswers card={props.card} highlightAnswer={props.givenAnswer} />
         </div>
       </div>
-      <Button primary={true} label="Next" onClick={props.onNext} />
+      <Button ref={nextButtonRef} primary={true} label="Next" onClick={props.onNext} />
     </div>
   )
 }
