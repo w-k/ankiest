@@ -22,24 +22,6 @@ export default async function nextCardAndStats(
 ): Promise<NextCardResponse> {
   ctx.session.$authorize()
   const today = new Date().toISOString().slice(0, 10)
-  // const cards = await db.$queryRawUnsafe<{ id: number }[]>(`
-  // SELECT
-  //   "Card"."id"
-  // FROM
-  //   "Card"
-  // JOIN "Answer" on "Card"."id"="Answer"."cardId"
-  // WHERE
-  //   "Card"."userId" = ${ctx.session.userId}
-  //   and("Card"."nextReview" IS NULL
-  //     OR date("Card"."nextReview") <= date('${today}'))
-  // ORDER BY
-  //   "Card"."bucket" DESC,
-  //   "Card"."nextReview" IS NULL DESC,
-  //   date("Card"."nextReview"),
-  //   "Card"."id" = ${input.avoidCardId ?? "NULL"} ASC,
-  //   random() ASC
-  // LIMIT 1
-  // `)
   const cards = await db.$queryRawUnsafe<{ id: number }[]>(`
   SELECT
     "Card"."id"
@@ -51,6 +33,7 @@ export default async function nextCardAndStats(
     and("Card"."nextReview" IS NULL
       OR date("Card"."nextReview") <= date('${today}'))
   ORDER BY
+    date("Card"."lastReviewed") = date(now()) DESC
     random() ASC
   LIMIT 1
   `)
