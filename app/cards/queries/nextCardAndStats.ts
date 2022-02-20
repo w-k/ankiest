@@ -33,7 +33,8 @@ export default async function nextCardAndStats(
     and("Card"."nextReview" IS NULL
       OR date("Card"."nextReview") <= date('${today}'))
   ORDER BY
-    date("Card"."lastReviewed") = date(now()) OR "Card"."lastReviewed" IS NULL ASC,
+    "Card"."lastReviewed" IS NULL DESC,
+    date("Card"."lastReviewed") = date(now()) ASC,
     random() ASC
   LIMIT 1
   `)
