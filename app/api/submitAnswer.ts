@@ -4,15 +4,11 @@ import nextCardAndStats from "app/cards/queries/nextCardAndStats"
 import { BlitzApiHandler, getSession, invokeWithMiddleware, NotFoundError } from "blitz"
 import addDays from "date-fns/addDays"
 
-type buckets = 1 | 2 | 3 | 4 | 5 | 6
-
-const bucketDelay: Record<buckets, number> = {
-  [1]: 0,
-  [2]: 1,
-  [3]: 2,
-  [4]: 4,
-  [5]: 9,
-  [6]: 14,
+const bucketDelay = (bucket: number) => {
+  if (bucket === 0) {
+    return 0
+  }
+  return Math.pow(2, bucket - 1)
 }
 
 const handler: BlitzApiHandler = async (req, res) => {
@@ -30,8 +26,8 @@ const handler: BlitzApiHandler = async (req, res) => {
   if (!card) {
     throw new NotFoundError()
   }
-  const newBucket = isCorrect ? Math.min(6, card.bucket + 1) : 1
-  const delay = bucketDelay[newBucket]
+  const newBucket = isCorrect ? card.bucket + 1 : 0
+  const delay = bucketDelay(newBucket)
   await invokeWithMiddleware(
     updateCard,
     {

@@ -13,7 +13,7 @@ export default async function createCard(input: z.infer<typeof CreateCard>, ctx:
   const card = await db.card.create({
     data: {
       question,
-      bucket: 1,
+      bucket: 0,
       nextReview: new Date(),
       userId: ctx.session.userId,
       answers: {
