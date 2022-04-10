@@ -50,6 +50,7 @@ export default async function nextCardAndStats(
       FROM
         "Card"
       WHERE
+        "Card"."userId" = ${ctx.session.userId} AND
         date("Card"."nextReview") <= date(now()) OR "Card"."nextReview" IS NULL
     ) AS "leftToReview", 
     (
