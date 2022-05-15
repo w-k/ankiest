@@ -1,5 +1,5 @@
 import { Suspense, useEffect, useState } from "react"
-import { Head, Link, usePaginatedQuery, useRouter, BlitzPage, Routes, useMutation } from "blitz"
+import { Head, usePaginatedQuery, useRouter, BlitzPage, useMutation } from "blitz"
 import getCards from "app/cards/queries/getCards"
 import BannerLayout from "app/core/layouts/BannerLayout"
 import { Question } from "app/components/Question"

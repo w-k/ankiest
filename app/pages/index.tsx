@@ -17,6 +17,9 @@ const Home: BlitzPage = () => {
             <Link href={Routes.CardsPage()}>
               <a>Browse</a>
             </Link>
+            <Link href={Routes.ImportPage()}>
+              <a>Import</a>
+            </Link>
           </div>
         </div>
       </div>

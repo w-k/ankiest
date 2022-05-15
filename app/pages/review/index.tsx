@@ -35,6 +35,6 @@ export async function getServerSideProps(context) {
 
 ReviewPage.authenticate = true
 ReviewPage.suppressFirstRenderFlicker = true
-ReviewPage.getLayout = (page) => <BannerLayout title="Home">{page}</BannerLayout>
+ReviewPage.getLayout = (page) => <BannerLayout title="Review">{page}</BannerLayout>
 
 export default ReviewPage
