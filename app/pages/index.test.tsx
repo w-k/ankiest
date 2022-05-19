@@ -12,9 +12,9 @@ test.skip("renders blitz documentation link", () => {
   // when you remove the the default content from the page
 
   // This is an example on how to mock api hooks when testing
-  mockUseCurrentUser.mockReturnValue({
+  mockUseCurrentusers.mockReturnValue({
     id: 1,
-    name: "User",
+    name: "users",
     email: "user@email.com",
     role: "user",
   })

@@ -1,5 +1,5 @@
 import { Ctx, NotFoundError } from "blitz"
-import db from "db"
+import { db } from "db"
 import { z } from "zod"
 
 const DeleteCard = z.object({
@@ -7,23 +7,30 @@ const DeleteCard = z.object({
 })
 
 export default async function deleteCard({ id }: z.infer<typeof DeleteCard>, ctx: Ctx) {
-  ctx.session.$authorize()
-  const card = await db.card.findFirst({
-    where: {
-      id,
-      userId: ctx.session.userId,
-    },
-  })
-  if (!card) throw new NotFoundError()
-  await db.card.update({
-    where: { id },
-    data: {
-      answers: {
-        deleteMany: {},
-      },
-    },
-  })
-  await db.card.deleteMany({
-    where: { id },
+  await db.transaction().execute(async (tx) => {
+    ctx.session.$authorize()
+    const q = tx
+      .deleteFrom("answers")
+      .where("answers.cardId", "=", id)
+      .where(
+        (q) =>
+          q
+            .selectFrom("cards")
+            .select("cards.userId")
+            .whereRef("answers.cardId", "=", "cards.id")
+            .limit(1),
+        "=",
+        ctx.session.userId
+      )
+
+    await q.execute()
+    const { numDeletedRows } = await tx
+      .deleteFrom("cards")
+      .where("cards.userId", "=", ctx.session.userId)
+      .where("cards.id", "=", id)
+      .executeTakeFirstOrThrow()
+    if (numDeletedRows !== BigInt(1)) {
+      throw new NotFoundError()
+    }
   })
 }

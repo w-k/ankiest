@@ -1,5 +1,5 @@
 import nextCardAndStats, { NextCardResponse } from "app/cards/queries/nextCardAndStats"
-import { CardWithAnswers } from "app/components/CardWithAnswers"
+import { CardWithAnswers } from "types"
 import { LinkButton } from "app/components/LinkButton"
 import { Review } from "app/components/Review"
 import BannerLayout from "app/core/layouts/BannerLayout"

@@ -2,9 +2,9 @@ import { Feedback } from "app/components/Feedback"
 import { Prompt } from "app/components/Prompt"
 import { useEffect, useState } from "react"
 import { evaluateAnswer } from "app/logic/evaluateAnswer"
-import { CardWithAnswers } from "./CardWithAnswers"
 import { getAntiCSRFToken } from "blitz"
 import { NextCardResponse, Stats } from "app/cards/queries/nextCardAndStats"
+import { CardWithAnswers } from "types"
 
 export interface ReviewProps {
   card: CardWithAnswers

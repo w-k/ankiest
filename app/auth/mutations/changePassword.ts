@@ -1,23 +1,21 @@
-import { NotFoundError, SecurePassword, resolver } from "blitz"
-import db from "db"
-import { authenticateUser } from "./login"
+import { Ctx, NotFoundError, SecurePassword } from "blitz"
 import { ChangePassword } from "../validations"
+import { db } from "db"
+import { z } from "zod"
 
-export default resolver.pipe(
-  resolver.zod(ChangePassword),
-  resolver.authorize(),
-  async ({ currentPassword, newPassword }, ctx) => {
-    const user = await db.user.findFirst({ where: { id: ctx.session.userId! } })
-    if (!user) throw new NotFoundError()
-
-    await authenticateUser(user.email, currentPassword)
-
-    const hashedPassword = await SecurePassword.hash(newPassword.trim())
-    await db.user.update({
-      where: { id: user.id },
-      data: { hashedPassword },
+export default async function changePassword(input: z.infer<typeof ChangePassword>, ctx: Ctx) {
+  ctx.session.$authorize()
+  const hashedPassword = await SecurePassword.hash(input.newPassword.trim())
+  const result = await db
+    .updateTable("users")
+    .set({
+      hashedPassword,
     })
+    .where("users.id", "=", ctx.session.userId)
+    .executeTakeFirstOrThrow()
 
-    return true
+  if (result.numUpdatedRows !== BigInt(1)) {
+    throw new NotFoundError()
   }
-)
+  return true
+}

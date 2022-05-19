@@ -1,14 +1,6 @@
 import { Ctx } from "blitz"
+import { db } from "db"
 import { z } from "zod"
-import { Pool } from "pg"
-import {
-  ColumnType,
-  Generated,
-  InsertObject,
-  Kysely,
-  PostgresDialect,
-  ValueExpression,
-} from "kysely"
 
 const CreateManyCards = z.array(
   z.object({
@@ -20,41 +12,8 @@ const CreateManyCards = z.array(
 export default async function createManyCards(input: z.infer<typeof CreateManyCards>, ctx: Ctx) {
   ctx.session.$authorize()
 
-  interface CardTable {
-    id: Generated<number>
-    createdAt: ColumnType<Date, undefined, never>
-    updatedAt: Date
-    question: string
-    bucket: number
-    lastReviewed: Date
-    nextReview: Date
-    userId: number
-  }
-
-  interface AnswerTable {
-    id: Generated<number>
-    createdAt: ColumnType<Date, undefined, never>
-    updatedAt: Date
-    text: string
-    cardId: number
-  }
-
-  interface Database {
-    Card: CardTable
-    Answer: AnswerTable
-  }
-
-  const db = new Kysely<Database>({
-    dialect: new PostgresDialect({
-      pool: new Pool({
-        host: "localhost",
-        database: "ankier",
-      }),
-    }),
-  })
-
   const cardsResult = await db
-    .insertInto("Card")
+    .insertInto("cards")
     .values(
       input.map(({ question }) => ({
         question,
@@ -69,7 +28,7 @@ export default async function createManyCards(input: z.infer<typeof CreateManyCa
     .execute()
 
   await db
-    .insertInto("Answer")
+    .insertInto("answers")
     .values(
       input.map(({ answer }, index) => ({
         text: answer,

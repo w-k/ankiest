@@ -91,7 +91,7 @@ ankier
 │   │   │   ├── Form.tsx
 │   │   │   └── LabeledTextField.tsx
 │   │   ├── hooks/
-│   │   │   └── useCurrentUser.ts
+│   │   │   └── useCurrentusers.ts
 │   │   └── layouts/
 │   │       └── Layout.tsx
 │   ├── pages/
@@ -102,7 +102,7 @@ ankier
 │   │   └── index.tsx
 │   └── users/
 │       └── queries/
-│           └── getCurrentUser.ts
+│           └── getCurrentusers.ts
 ├── db/
 │   ├── migrations/
 │   ├── index.ts

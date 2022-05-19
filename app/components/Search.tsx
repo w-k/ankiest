@@ -1,7 +1,7 @@
 import getCards from "app/cards/queries/getCards"
 import { useQuery } from "blitz"
 import { Suspense, useState } from "react"
-import { CardWithAnswers } from "./CardWithAnswers"
+import { CardWithAnswers } from "types"
 
 interface SearchResultsProps {
   query: string
@@ -9,29 +9,9 @@ interface SearchResultsProps {
 }
 
 const SearchResults = (props: SearchResultsProps) => {
-  const [{ cards }] = useQuery(getCards, {
-    orderBy: { id: "asc" },
-    take: 10,
-    where: {
-      OR: [
-        {
-          question: {
-            contains: props.query,
-            mode: "insensitive",
-          },
-        },
-        {
-          answers: {
-            some: {
-              text: {
-                contains: props.query,
-                mode: "insensitive",
-              },
-            },
-          },
-        },
-      ],
-    },
+  const [{ values: cards }] = useQuery(getCards, {
+    limit: 10,
+    query: props.query,
   })
   if (!cards.length) {
     return null

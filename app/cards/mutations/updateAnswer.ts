@@ -1,5 +1,5 @@
 import { Ctx, NotFoundError } from "blitz"
-import db from "db"
+import { db } from "db"
 import { z } from "zod"
 
 const UpdateAnswer = z.object({
@@ -8,12 +8,29 @@ const UpdateAnswer = z.object({
 })
 
 export default async function updateAnswer(input: z.infer<typeof UpdateAnswer>, ctx: Ctx) {
-  const { id, ...data } = input
   ctx.session.$authorize()
-  // TODO: check that the answer belongs to the user
-  const updateAnswer = await db.answer.update({
-    where: { id },
-    data,
-  })
-  return updateAnswer
+
+  const result = await db
+    .updateTable("answers")
+    .set({
+      text: input.text,
+    })
+    .where(
+      (q) =>
+        q
+          .selectFrom("cards")
+          .select("cards.userId")
+          .whereRef("answers.cardId", "=", "cards.id")
+          .limit(1),
+      "=",
+      ctx.session.userId
+    )
+    .where("answers.id", "=", input.id)
+    .executeTakeFirstOrThrow()
+
+  if (result.numUpdatedRows !== BigInt(1)) {
+    throw new NotFoundError()
+  }
+
+  return result
 }

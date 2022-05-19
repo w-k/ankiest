@@ -1,4 +1,4 @@
-INSERT INTO "public"."Card" ("id", "createdAt", "updatedAt", "question", "bucket", "lastReviewed", "nextReview", "userId") VALUES
+INSERT INTO "public"."cards" ("id", "createdAt", "updatedAt", "question", "bucket", "lastReviewed", "nextReview", "userId") VALUES
 (1, '2021-05-01 17:35:55.293', '2022-01-25 16:03:21.788', 'pueblo', 6, '2022-01-25 16:03:21.787', NULL, 1),
 (2, '2021-05-02 10:05:56.547', '2022-01-25 16:05:46.109', 'suprimir', 6, '2022-01-25 16:05:46.109', NULL, 1),
 (3, '2021-05-02 10:06:47.067', '2022-01-25 16:05:26.305', 'ayuda', 6, '2022-01-25 16:05:26.304', NULL, 1),

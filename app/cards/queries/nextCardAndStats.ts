@@ -1,6 +1,7 @@
-import { CardWithAnswers } from "app/components/CardWithAnswers"
 import { Ctx } from "blitz"
-import db from "db"
+import { db } from "db"
+import { sql } from "kysely"
+import { CardWithAnswers } from "types"
 
 export interface NextCardInput {
   avoidCardId?: number
@@ -21,62 +22,47 @@ export default async function nextCardAndStats(
   ctx: Ctx
 ): Promise<NextCardResponse> {
   ctx.session.$authorize()
-  const today = new Date().toISOString().slice(0, 10)
-  const cards = await db.$queryRawUnsafe<{ id: number }[]>(`
-  SELECT
-    "Card"."id"
-  FROM
-    "Card"
-  JOIN "Answer" on "Card"."id"="Answer"."cardId"
-  WHERE
-    "Card"."userId" = ${ctx.session.userId}
-    and("Card"."nextReview" IS NULL
-      OR date("Card"."nextReview") <= date('${today}'))
-  ORDER BY
-    "Card"."lastReviewed" IS NULL DESC,
-    date("Card"."lastReviewed") = date(now()) ASC,
-    random() ASC
-  LIMIT 1
-  `)
 
-  const statsResult = await db.$queryRaw<{ leftToReview: number; reviewedToday: number }[]>`
-  SELECT
-    "leftToReview"."count" "leftToReview",
-    "reviewedToday"."count" "reviewedToday"
-  FROM 
-    (
-      SELECT
-        count(*) "count"
-      FROM
-        "Card"
-      WHERE
-        "Card"."userId" = ${ctx.session.userId} AND
-        date("Card"."nextReview") <= date(now()) OR "Card"."nextReview" IS NULL
-    ) AS "leftToReview", 
-    (
-      SELECT
-        count(*) "count"
-      FROM
-        "Card"
-      WHERE
-        date("Card"."lastReviewed") = date(now())
-        AND date("Card"."nextReview") > date(now())
-    ) AS "reviewedToday"
-  `
-  const stats = statsResult[0]!
+  const card = (await db
+    .selectFrom("cards")
+    .leftJoin("answers", "answers.cardId", "cards.id")
+    .selectAll("cards")
+    .select(sql`json_agg(answers.*)`.as("answers"))
+    .where("cards.userId", "=", ctx.session.userId)
+    .where((q) =>
+      q
+        .orWhere("cards.nextReview", "is", sql`null`)
+        .orWhere(sql`date("cards"."nextReview")`, "<=", sql`date(now())`)
+    )
+    .groupBy("cards.id")
+    .orderBy(sql`"cards"."lastReviewed" is null`, "desc")
+    .orderBy(sql`date("cards"."lastReviewed") = date(now())`, "asc")
+    .orderBy(sql`random()`, "asc")
+    .executeTakeFirst()) as CardWithAnswers
 
-  if (!cards[0]) {
-    return { stats }
+  const leftToReview = await db
+    .selectFrom("cards")
+    .select([sql`count(*)`.as("count")])
+    .where("cards.userId", "=", ctx.session.userId)
+    .where((q) =>
+      q
+        .orWhere(sql`date("cards"."nextReview")`, "<=", sql`date(now())`)
+        .orWhere("cards.nextReview", "is", sql`null`)
+    )
+    .executeTakeFirst()
+
+  const reviewedToday = await db
+    .selectFrom("cards")
+    .select([sql`count(*)`.as("count")])
+    .where("cards.userId", "=", ctx.session.userId)
+    .where(sql`date("cards"."lastReviewed")`, "=", sql`date(now())`)
+    .where(sql`date("cards"."nextReview")`, ">", sql`date(now())`)
+    .executeTakeFirst()
+
+  const stats = {
+    leftToReview: leftToReview ? parseInt(leftToReview.count as string) : 0,
+    reviewedToday: reviewedToday ? parseInt(reviewedToday.count as string) : 0,
   }
-
-  const card = await db.card.findFirst({
-    where: {
-      id: cards[0].id,
-    },
-    include: {
-      answers: true,
-    },
-  })
 
   if (!card) {
     return { stats }

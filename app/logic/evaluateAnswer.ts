@@ -1,4 +1,4 @@
-import { Answer } from "@prisma/client"
+import { Answer } from "types"
 
 export interface Evaluation {
   isCorrect: boolean

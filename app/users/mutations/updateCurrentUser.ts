@@ -1,5 +1,5 @@
 import { Ctx } from "blitz"
-import db from "db"
+import { db } from "db"
 import { z } from "zod"
 
 const UpdateCurrentUser = z.object({
@@ -11,9 +11,10 @@ export default async function updateCurrentUser(
   ctx: Ctx
 ) {
   ctx.session.$authorize()
-  const updatedUser = await db.user.update({
-    where: { id: ctx.session.userId },
-    data: input,
-  })
+  const updatedUser = await db
+    .updateTable("users")
+    .set(input)
+    .where("users.id", "=", ctx.session.userId)
+    .executeTakeFirstOrThrow()
   return updatedUser
 }

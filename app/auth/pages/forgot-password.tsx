@@ -4,6 +4,7 @@ import { LabeledTextField } from "app/core/components/LabeledTextField"
 import { Form, FORM_ERROR } from "app/core/components/Form"
 import { ForgotPassword } from "app/auth/validations"
 import forgotPassword from "app/auth/mutations/forgotPassword"
+import { ReactNode } from "react"
 
 const ForgotPasswordPage: BlitzPage = () => {
   const [forgotPasswordMutation, { isSuccess }] = useMutation(forgotPassword)
@@ -43,6 +44,8 @@ const ForgotPasswordPage: BlitzPage = () => {
 }
 
 ForgotPasswordPage.redirectAuthenticatedTo = "/"
-ForgotPasswordPage.getLayout = (page) => <Layout title="Forgot Your Password?">{page}</Layout>
+ForgotPasswordPage.getLayout = (page: ReactNode) => (
+  <Layout title="Forgot Your Password?">{page}</Layout>
+)
 
 export default ForgotPasswordPage

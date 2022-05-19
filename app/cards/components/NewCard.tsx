@@ -1,10 +1,10 @@
 import { Button } from "app/components/Button"
-import { CardWithAnswers } from "app/components/CardWithAnswers"
+import { CardWithAnswers } from "types"
 import { DeleteIcon } from "app/components/icons"
 import { useKeyDownEffect, useKeyPressEffect } from "app/components/useKeyDownEffect"
+import { useCurrentUser } from "app/core/hooks/useCurrentUser"
 import updateCurrentUser from "app/users/mutations/updateCurrentUser"
-import getCurrentUser from "app/users/queries/getCurrentUser"
-import { useMutation, useQuery } from "blitz"
+import { useMutation } from "blitz"
 import { useEffect, useRef, useState } from "react"
 import { v4 as uuid } from "uuid"
 
@@ -49,7 +49,7 @@ const DEFAULT_ANSWERS = {}
 export const NewCard = (props: NewCardProps) => {
   const [question, setQuestion] = useState<string>(DEFAULT_QUESTION)
   const [answers, setAnswers] = useState<Record<string, string>>(DEFAULT_ANSWERS)
-  const [currentUser] = useQuery(getCurrentUser, { createInverse: true })
+  const currentUser = useCurrentUser()
   const [updateCurrentUserMutation] = useMutation(updateCurrentUser)
   const [createInverse, setCreateInverse] = useState((currentUser as any).createInverse)
   const handleCreateInverseChange = (event: React.ChangeEvent<HTMLInputElement>) => {

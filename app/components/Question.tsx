@@ -1,9 +1,9 @@
-import { Card } from "@prisma/client"
 import updateCard from "app/cards/mutations/updateCard"
+import { CardWithAnswers } from "types"
 import { useMutation } from "blitz"
 import { useEffect, useRef, useState } from "react"
 
-export const Question = (props: { card: Card; editable?: boolean }) => {
+export const Question = (props: { card: CardWithAnswers; editable?: boolean }) => {
   const [isEditMode, setEditMode] = useState(false)
   const [question, setQuestion] = useState(props.card.question)
   const [updateCardMutation] = useMutation(updateCard)

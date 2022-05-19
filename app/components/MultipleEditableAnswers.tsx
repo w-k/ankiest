@@ -1,8 +1,8 @@
-import { Answer } from "@prisma/client"
+import { Answer } from "types"
 import addAnswer from "app/cards/mutations/addAnswer"
+import { CardWithAnswers } from "types"
 import { useMutation } from "blitz"
 import { useEffect, useRef, useState } from "react"
-import { CardWithAnswers } from "./CardWithAnswers"
 import { AddIcon, ThumbUpIcon } from "./icons"
 import { SingleEditableAnswer } from "./SingleEditableAnswer"
 

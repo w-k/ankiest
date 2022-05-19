@@ -1,5 +1,5 @@
-import { Ctx, NotFoundError } from "blitz"
-import db from "db"
+import { Ctx } from "blitz"
+import { db } from "db"
 import { z } from "zod"
 
 const AddAnswer = z.object({
@@ -10,11 +10,14 @@ const AddAnswer = z.object({
 export default async function addAnswer(input: z.infer<typeof AddAnswer>, ctx: Ctx) {
   ctx.session.$authorize()
   // TODO: check that the answer belongs to the user
-  const answer = await db.answer.create({
-    data: {
-      cardId: input.cardId,
+  const answer = await db
+    .insertInto("answers")
+    .values({
       text: input.text,
-    },
-  })
+      cardId: input.cardId,
+      updatedAt: new Date(),
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow()
   return answer
 }

@@ -1,35 +1,60 @@
-import { Ctx, paginate } from "blitz"
-import db, { Prisma } from "db"
+import { Ctx } from "blitz"
+import { AnswerTable, db } from "db"
+import { Selectable, sql } from "kysely"
+import { CardWithAnswers } from "types"
 
-interface GetCardsInput
-  extends Pick<Prisma.CardFindManyArgs, "where" | "orderBy" | "skip" | "take"> {}
+type GetCardsInput = {
+  query?: string
+  limit?: number
+  offset?: number
+}
 
-export default async function getCards(input: GetCardsInput, ctx: Ctx) {
+const isDefined = <T>(input: T): input is NonNullable<T> => input !== null && input !== undefined
+
+export type Answer = Selectable<AnswerTable>
+
+export interface GetCardsResponse {
+  values: CardWithAnswers[]
+  totalCount: number
+}
+
+export default async function getCards(
+  input: GetCardsInput | undefined = {},
+  ctx: Ctx
+): Promise<GetCardsResponse> {
   ctx.session.$authorize()
-  const { where, orderBy, skip = 0, take = 100 } = input
-  const {
-    items: cards,
-    hasMore,
-    nextPage,
-    count,
-  } = await paginate({
-    skip,
-    take,
-    count: () => db.card.count({ where }),
-    query: (paginateArgs) =>
-      db.card.findMany({
-        ...paginateArgs,
-        where: { ...where, userId: ctx.session.userId! },
-        include: {
-          answers: true,
-        },
-        orderBy,
-      }),
-  })
+  const { userId } = ctx.session
+  if (!userId) {
+    throw "Empty session user"
+  }
+  const { query, limit, offset } = input
+  let sqlQuery = db
+    .selectFrom("cards")
+    .leftJoin("answers", "answers.cardId", "cards.id")
+    .where("cards.userId", "=", userId)
+  if (query) {
+    sqlQuery = sqlQuery
+      .where((q) =>
+        q
+          .orWhere("answers.text", "like", `%${query}%`)
+          .orWhere("cards.question", "like", `%${query}%`)
+      )
+      .where("cards.userId", "=", userId)
+  }
+  const total = await sqlQuery.select([sql`count(*)`.as("count")]).execute()
+
+  sqlQuery = sqlQuery
+    .orderBy("cards.createdAt", "desc")
+    .groupBy("cards.id")
+    .selectAll("cards")
+    .select(sql`json_agg(answers.*)`.as("answers"))
+
+  if (isDefined(limit) && isDefined(offset)) {
+    sqlQuery = sqlQuery.offset(offset).limit(limit)
+  }
+  const queryResult = await sqlQuery.execute()
   return {
-    cards,
-    nextPage,
-    hasMore,
-    count,
+    values: queryResult as CardWithAnswers[],
+    totalCount: (total[0]?.count as number) ?? 0,
   }
 }

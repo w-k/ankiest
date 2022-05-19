@@ -1,15 +1,12 @@
-import { Suspense, useEffect, useState } from "react"
-import { Head, usePaginatedQuery, useRouter, BlitzPage, useMutation } from "blitz"
-import getCards from "app/cards/queries/getCards"
+import { Suspense, useState } from "react"
+import { Head, useRouter, BlitzPage, useMutation, useQuery } from "blitz"
+import getCards, { GetCardsResponse } from "app/cards/queries/getCards"
 import BannerLayout from "app/core/layouts/BannerLayout"
 import { Question } from "app/components/Question"
-import { Card } from "@prisma/client"
-import { CardWithAnswers } from "app/components/CardWithAnswers"
 import { DeleteIcon } from "app/components/icons"
 import deleteCard from "app/cards/mutations/deleteCard"
 import { MultipleEditableAnswers } from "app/components/MultipleEditableAnswers"
-
-const ITEMS_PER_PAGE = 100
+import { CardWithAnswers } from "types"
 
 interface CardRowProps {
   card: CardWithAnswers
@@ -37,65 +34,35 @@ const CardRow = (props: CardRowProps) => {
   )
 }
 
-export const CardsList = () => {
+const PAGE_SIZE = 100
+
+export const CardsList = ({ query }: { query: string }) => {
   const router = useRouter()
-  const page = Number(router.query.page) || 0
-  const [where, setWhere] = useState({})
-  const [{ cards, hasMore }, { setQueryData }] = usePaginatedQuery(getCards, {
-    orderBy: { id: "asc" },
-    skip: ITEMS_PER_PAGE * page,
-    take: ITEMS_PER_PAGE,
-    where,
+  const page = Number(router.query.page) || 1
+  const [cardsResult, { setQueryData }] = useQuery(getCards, {
+    query,
+    limit: PAGE_SIZE,
+    offset: (page - 1) * PAGE_SIZE,
   })
-  const [deleteMutation] = useMutation(deleteCard)
-  const [query, setQuery] = useState("")
-  useEffect(() => {
-    if (query.length) {
-      setWhere({
-        OR: [
-          {
-            question: {
-              contains: query,
-              mode: "insensitive",
-            },
-          },
-          {
-            answers: {
-              some: {
-                text: {
-                  contains: query,
-                  mode: "insensitive",
-                },
-              },
-            },
-          },
-        ],
-      })
-    } else {
-      setWhere({})
-    }
-  }, [query])
 
   const goToPreviousPage = () => router.push({ query: { page: page - 1 } })
   const goToNextPage = () => router.push({ query: { page: page + 1 } })
+
+  const [deleteMutation] = useMutation(deleteCard)
   const handleDelete = async (cardId: number) => {
     await deleteMutation({ id: cardId })
-    setQueryData((oldData) =>
+    setQueryData((oldData: GetCardsResponse) =>
       oldData
         ? {
-            ...oldData,
-            cards: oldData.cards.filter((card: Card) => card.id !== cardId),
+            values: oldData.values.filter((card: CardWithAnswers) => card.id !== cardId),
+            totalCount: oldData.totalCount - 1,
           }
-        : { cards: [], hasMore: false }
+        : { values: [], totalCount: 0 }
     )
-  }
-  const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value)
   }
 
   return (
     <div>
-      <input value={query} className="border rounded mb-8 px-4 py-2" onChange={handleQueryChange} />
       <table>
         <thead>
           <tr>
@@ -107,15 +74,21 @@ export const CardsList = () => {
         </thead>
 
         <tbody>
-          {cards.map((card: CardWithAnswers) => (
-            <CardRow key={card.id} card={card} onDelete={() => handleDelete(card.id)} />
+          {cardsResult.values.map((card: CardWithAnswers) => (
+            <CardRow
+              key={card.id}
+              card={card}
+              onDelete={() => {
+                handleDelete(card.id)
+              }}
+            />
           ))}
         </tbody>
       </table>
       <button disabled={page === 0} onClick={goToPreviousPage}>
         Previous
       </button>
-      <button disabled={!hasMore} onClick={goToNextPage}>
+      <button disabled={cardsResult.totalCount <= PAGE_SIZE * page} onClick={goToNextPage}>
         Next
       </button>
     </div>
@@ -123,6 +96,11 @@ export const CardsList = () => {
 }
 
 const CardsPage: BlitzPage = () => {
+  // const [deleteMutation] = useMutation(deleteCard)
+  const [query, setQuery] = useState("")
+  const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value)
+  }
   return (
     <>
       <Head>
@@ -130,8 +108,13 @@ const CardsPage: BlitzPage = () => {
       </Head>
 
       <div>
+        <input
+          value={query}
+          className="border rounded mb-8 px-4 py-2"
+          onChange={handleQueryChange}
+        />
         <Suspense fallback={<div>Loading...</div>}>
-          <CardsList />
+          <CardsList query={query} />
         </Suspense>
       </div>
     </>

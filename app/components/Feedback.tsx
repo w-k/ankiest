@@ -1,10 +1,10 @@
 import { Button } from "./Button"
 import { Diff } from "./Diff"
-import { CardWithAnswers } from "./CardWithAnswers"
 import { MultipleEditableAnswers } from "./MultipleEditableAnswers"
 import { Question } from "./Question"
 import { ThumbDownIcon } from "./icons"
 import { useEffect, useRef } from "react"
+import { CardWithAnswers } from "types"
 
 export interface FeedbackProps {
   card: CardWithAnswers

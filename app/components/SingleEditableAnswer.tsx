@@ -1,9 +1,9 @@
-import { Answer } from "@prisma/client"
+import { Answer } from "types"
 import createCard from "app/cards/mutations/createCard"
 import updateAnswer from "app/cards/mutations/updateAnswer"
+import { CardWithAnswers } from "types"
 import { useMutation } from "blitz"
 import { useEffect, useRef, useState } from "react"
-import { CardWithAnswers } from "./CardWithAnswers"
 import { SwapIcon } from "./icons"
 
 export const SingleEditableAnswer = (props: { answer: Answer; card: CardWithAnswers }) => {

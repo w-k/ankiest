@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
+import { CardWithAnswers } from "types"
 import { Button } from "./Button"
-import { CardWithAnswers } from "./CardWithAnswers"
 import { Question } from "./Question"
 import { useKeyPressEffect } from "./useKeyDownEffect"
 

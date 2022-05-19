@@ -1,17 +1,14 @@
 import { Ctx } from "blitz"
-import db from "db"
-// import type { UserSelect } from "@prisma/client"
+import { db } from "db"
 
-export default async function getCurrentUser(
-  select: any = { id: true, name: true, email: true, role: true },
-  { session }: Ctx
-) {
+export default async function getCurrentUser(_: null, { session }: Ctx) {
   if (!session.userId) return null
 
-  const user = await db.user.findFirst({
-    where: { id: session.userId },
-    select,
-  })
+  const user = await db
+    .selectFrom("users")
+    .selectAll()
+    .where("users.id", "=", session.userId)
+    .executeTakeFirstOrThrow()
 
   return user
 }

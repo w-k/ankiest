@@ -1,0 +1,113 @@
+0 haber
+1 'haber' es el modelo de su conjugación.
+2 No suele usarse el imperativo para el verbo haber, pero se registran las las formas antiguas habe y habed para tú y vosostros, respectivamente, junto con haya, hayamos y hayan, y un segunda conjugación, he, para tú, que aparece en algunas frases hechas.
+3 infinitivo:
+4 gerundio:
+5 participio:
+6 pronominal: 	haber
+7 habiendo
+8 habido
+9 – 	definición
+10 	en inglés
+11 en francés
+12 en portugués
+13 Indicativo
+14 presente
+15 yo	he
+16 tú	has
+17 él, ella, Ud.	ha, impersonal: hay
+18 nosotros	hemos
+19 vosotros	habéis
+20 ellos, ellas, Uds.	han
+21 vos	has
+22 imperfectoⓘ
+23 había
+24 habías
+25 había
+26 habíamos
+27 habíais
+28 habían
+29 habías
+30 pretéritoⓘ
+31 hube
+32 hubiste
+33 hubo
+34 hubimos
+35 hubisteis
+36 hubieron
+37 hubiste
+38 futuroⓘ
+39 habré
+40 habrás
+41 habrá
+42 habremos
+43 habréis
+44 habrán
+45 habrás
+46 condicionalⓘ
+47 habría
+48 habrías
+49 habría
+50 habríamos
+51 habríais
+52 habrían
+53 habrías
+54 Formas compuestas comunes
+55 pretérito perfecto
+56 yo	he habido
+57 tú	has habido
+58 él, ella, Ud.	ha habido
+59 nosotros	hemos habido
+60 vosotros	habéis habido
+61 ellos, ellas, Uds.	han habido
+62 vos	has habido
+63 pluscuamperfectoⓘ
+64 había habido
+65 habías habido
+66 había habido
+67 habíamos habido
+68 habíais habido
+69 habían habido
+70 habías habido
+71 futuro perfecto
+72 habré habido
+73 habrás habido
+74 habrá habido
+75 habremos habido
+76 habréis habido
+77 habrán habido
+78 habrás habido
+79 condicional perfecto
+80 habría habido
+81 habrías habido
+82 habría habido
+83 habríamos habido
+84 habríais habido
+85 habrían habido
+86 habrías habido
+87 Subjuntivo
+88 presente
+89 yo	haya
+90 tú	hayas
+91 él, ella, Ud.	haya
+92 nosotros	hayamos
+93 vosotros	hayáis
+94 ellos, ellas, Uds.	hayan
+95 vos	hayas
+96 imperfectoⓘ
+97 hubiera o hubiese
+98 hubieras o hubieses
+99 hubiera o hubiese
+100 hubiéramos o hubiésemos
+101 hubierais o hubieseis
+102 hubieran o hubiesen
+103 hubieras o hubieses
+104 futuroⓘ
+105 hubiere
+106 hubieres
+107 hubiere
+108 hubiéremos
+109 hubiereis
+110 hubieren
+111 hubieres
+[]

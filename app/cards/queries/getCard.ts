@@ -1,24 +1,21 @@
-import { NotFoundError, Ctx } from "blitz"
-import db from "db"
-import { z } from "zod"
+import { Ctx } from "blitz"
+import { db } from "db"
+import { sql } from "kysely"
 
-const GetCard = z.object({
-  id: z.number().optional().refine(Boolean, "Required"),
-})
+interface GetCardInput {
+  id: number
+}
 
-export default async function getCard(input: z.infer<typeof GetCard>, ctx: Ctx) {
+export default async function getCard(input: GetCardInput, ctx: Ctx) {
   ctx.session.$authorize()
-  const card = await db.card.findFirst({
-    where: {
-      id: input.id,
-      userId: ctx.session.userId,
-    },
-    include: {
-      answers: true,
-    },
-  })
 
-  if (!card) throw new NotFoundError()
-
-  return card
+  return await db
+    .selectFrom("cards")
+    .leftJoin("answers", "answers.cardId", "cards.id")
+    .where("cards.id", "=", input.id)
+    .where("cards.userId", "=", ctx.session.userId)
+    .groupBy("cards.id")
+    .selectAll("cards")
+    .select(sql`json_agg(answers.*)`.as("answers"))
+    .executeTakeFirstOrThrow()
 }

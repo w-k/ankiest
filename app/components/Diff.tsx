@@ -1,4 +1,4 @@
-import { Answer } from "@prisma/client"
+import { Answer } from "types"
 import { Change, diffChars } from "diff"
 import { ThumbDownIcon } from "./icons"
 
