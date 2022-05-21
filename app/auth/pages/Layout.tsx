@@ -15,4 +15,4 @@ const Layout: BlitzLayout<{ title?: string }> = ({ title, children }) => {
   )
 }
 
-export { Layout }
+export default Layout
