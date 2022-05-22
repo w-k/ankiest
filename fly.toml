@@ -9,6 +9,9 @@ processes = []
 [build]
   builder = "heroku/buildpacks:20"
 
+[deploy]
+  release_command = "yarn migrate:latest"
+
 [env]
   PORT = "8080"
 
