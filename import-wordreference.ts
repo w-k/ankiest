@@ -40,7 +40,7 @@ const lineForms: Record<number, string> = {
 
   18: "1ª persona singular (yo) pretérito indicativo",
   19: "2ª persona singular (tú) pretérito indicativo",
-  20: "3ª persona singular (él/ella/usted) pretérito indicativo",
+  20: "3ª persona singular (él/ella/usted) pretérito imperfecto indicativo",
   21: "1ª persona plural (nosotros) pretérito indicativo",
   22: "2ª persona plural (vosotros) pretérito indicativo",
   23: "3ª persona plural (ellos/ellas/ustedes) pretérito indicativo",

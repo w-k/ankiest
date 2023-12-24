@@ -5,7 +5,7 @@ import BannerLayout from "app/core/layouts/BannerLayout"
 import { Question } from "app/components/Question"
 import { DeleteIcon } from "app/components/icons"
 import deleteCard from "app/cards/mutations/deleteCard"
-import { MultipleEditableAnswers } from "app/components/MultipleEditableAnswers"
+import { MultipleEditableAnswers } from "app/components/MultipleAnswers"
 import { CardWithAnswers } from "types"
 
 interface CardRowProps {

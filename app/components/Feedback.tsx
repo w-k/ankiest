@@ -1,6 +1,6 @@
 import { Button } from "./Button"
 import { Diff } from "./Diff"
-import { MultipleEditableAnswers } from "./MultipleEditableAnswers"
+import { MultipleAnswers } from "./MultipleAnswers"
 import { Question } from "./Question"
 import { ThumbDownIcon } from "./icons"
 import { useEffect, useRef } from "react"
@@ -39,7 +39,7 @@ export const Feedback = (props: FeedbackProps) => {
               </span>
             )
           )}
-          <MultipleEditableAnswers card={props.card} highlightAnswer={props.givenAnswer} />
+          <MultipleAnswers card={props.card} highlightAnswer={props.givenAnswer} />
         </div>
       </div>
       <Button ref={nextButtonRef} primary={true} label="Next" onClick={props.onNext} />
