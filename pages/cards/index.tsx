@@ -1,11 +1,14 @@
+import Head from "next/head"
+import { useMutation, useQuery } from "@blitzjs/rpc"
+import { BlitzPage } from "@blitzjs/next"
+import { useRouter } from "next/router"
 import { Suspense, useState } from "react"
-import { Head, useRouter, BlitzPage, useMutation, useQuery } from "blitz"
 import getCards, { GetCardsResponse } from "app/cards/queries/getCards"
 import BannerLayout from "app/core/layouts/BannerLayout"
 import { Question } from "app/components/Question"
 import { DeleteIcon } from "app/components/icons"
 import deleteCard from "app/cards/mutations/deleteCard"
-import { MultipleEditableAnswers } from "app/components/MultipleAnswers"
+import { MultipleAnswers } from "app/components/MultipleAnswers"
 import { CardWithAnswers } from "types"
 
 interface CardRowProps {
@@ -19,7 +22,7 @@ const CardRow = (props: CardRowProps) => {
         <Question card={props.card} editable={true} />
       </td>
       <td className="px-5">
-        <MultipleEditableAnswers card={props.card} />
+        <MultipleAnswers card={props.card} />
       </td>
       <td className="px-5">{props.card.nextReview ? props.card.nextReview.toDateString() : ""}</td>
       <td className="px-5">
@@ -51,7 +54,7 @@ export const CardsList = ({ query }: { query: string }) => {
   const [deleteMutation] = useMutation(deleteCard)
   const handleDelete = async (cardId: number) => {
     await deleteMutation({ id: cardId })
-    setQueryData((oldData: GetCardsResponse) =>
+    await setQueryData((oldData: GetCardsResponse) =>
       oldData
         ? {
             values: oldData.values.filter((card: CardWithAnswers) => card.id !== cardId),
@@ -78,8 +81,8 @@ export const CardsList = ({ query }: { query: string }) => {
             <CardRow
               key={card.id}
               card={card}
-              onDelete={() => {
-                handleDelete(card.id)
+              onDelete={async () => {
+                await handleDelete(card.id)
               }}
             />
           ))}

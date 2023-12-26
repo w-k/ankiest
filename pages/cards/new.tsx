@@ -1,4 +1,6 @@
-import { useRouter, useMutation, BlitzPage, Routes } from "blitz"
+import { BlitzPage, Routes } from "@blitzjs/next"
+import { useMutation } from "@blitzjs/rpc"
+import { useRouter } from "next/router"
 import createCard from "app/cards/mutations/createCard"
 import BannerLayout from "app/core/layouts/BannerLayout"
 import { NewCard } from "app/cards/components/NewCard"
@@ -16,7 +18,7 @@ const NewCardPage: BlitzPage = () => {
         <NewCard
           onSubmit={async (card) => {
             await createCardMutation(card)
-            router.push(Routes.NewCardPage())
+            await router.push(Routes.NewCardPage())
           }}
         />
       </Suspense>

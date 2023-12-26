@@ -1,17 +1,14 @@
-import {
-  AppProps,
-  ErrorBoundary,
-  ErrorComponent,
-  AuthenticationError,
-  AuthorizationError,
-  ErrorFallbackProps,
-  useQueryErrorResetBoundary,
-} from "blitz"
+import { withBlitz } from "app/blitz-client"
+import { useQueryErrorResetBoundary } from "@blitzjs/rpc"
+
+import { AppProps, ErrorBoundary, ErrorFallbackProps, ErrorComponent } from "@blitzjs/next"
+
 import LoginForm from "app/auth/components/LoginForm"
 
 import "app/core/styles/index.css"
+import { AuthenticationError, AuthorizationError } from "blitz"
 
-export default function App({ Component, pageProps }: AppProps) {
+export default withBlitz(function App({ Component, pageProps }: AppProps) {
   const getLayout = Component.getLayout || ((page) => page)
 
   return (
@@ -24,7 +21,7 @@ export default function App({ Component, pageProps }: AppProps) {
       </ErrorBoundary>
     </>
   )
-}
+})
 
 function RootErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps) {
   if (error instanceof AuthenticationError) {

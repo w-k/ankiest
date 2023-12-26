@@ -1,10 +1,10 @@
+import { useMutation } from "@blitzjs/rpc"
 import { Button } from "app/components/Button"
 import { CardWithAnswers } from "types"
 import { DeleteIcon } from "app/components/icons"
 import { useKeyDownEffect, useKeyPressEffect } from "app/components/useKeyDownEffect"
 import { useCurrentUser } from "app/core/hooks/useCurrentUser"
 import updateCurrentUser from "app/users/mutations/updateCurrentUser"
-import { useMutation } from "blitz"
 import { useEffect, useRef, useState } from "react"
 import { v4 as uuid } from "uuid"
 
@@ -52,9 +52,9 @@ export const NewCard = (props: NewCardProps) => {
   const currentUser = useCurrentUser()
   const [updateCurrentUserMutation] = useMutation(updateCurrentUser)
   const [createInverse, setCreateInverse] = useState((currentUser as any).createInverse)
-  const handleCreateInverseChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCreateInverseChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setCreateInverse(event.target.checked)
-    updateCurrentUserMutation({ createInverse: event.target.checked })
+    return await updateCurrentUserMutation({ createInverse: event.target.checked })
   }
   const handleAddAnswer = () => {
     setAnswers({

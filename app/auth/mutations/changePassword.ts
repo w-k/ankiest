@@ -1,11 +1,15 @@
-import { Ctx, NotFoundError, SecurePassword } from "blitz"
+import { Ctx, NotFoundError } from "blitz"
 import { ChangePassword } from "../validations"
 import { db } from "db"
 import { z } from "zod"
+import { hash } from "password"
 
 export default async function changePassword(input: z.infer<typeof ChangePassword>, ctx: Ctx) {
   ctx.session.$authorize()
-  const hashedPassword = await SecurePassword.hash(input.newPassword.trim())
+  const hashedPassword = await hash(input.newPassword.trim())
+  if (typeof ctx.session.userId !== "number") {
+    throw new NotFoundError()
+  }
   const result = await db
     .updateTable("users")
     .set({

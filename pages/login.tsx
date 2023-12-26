@@ -1,4 +1,5 @@
-import { useRouter, BlitzPage } from "blitz"
+import { BlitzPage } from "@blitzjs/next"
+import { useRouter } from "next/router"
 import Layout from "app/core/layouts/Layout"
 import { LoginForm } from "app/auth/components/LoginForm"
 
@@ -8,9 +9,9 @@ const LoginPage: BlitzPage = () => {
   return (
     <div>
       <LoginForm
-        onSuccess={(_user) => {
+        onSuccess={async (_user) => {
           const next = router.query.next ? decodeURIComponent(router.query.next as string) : "/"
-          router.push(next)
+          await router.push(next)
         }}
       />
     </div>

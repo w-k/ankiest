@@ -1,4 +1,5 @@
-import { Head, ErrorComponent } from "blitz"
+import { ErrorComponent } from "@blitzjs/next"
+import Head from "next/head"
 
 // ------------------------------------------------------
 // This page is rendered if a route match is not found

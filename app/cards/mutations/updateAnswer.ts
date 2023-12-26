@@ -23,7 +23,7 @@ export default async function updateAnswer(input: z.infer<typeof UpdateAnswer>, 
           .whereRef("answers.cardId", "=", "cards.id")
           .limit(1),
       "=",
-      ctx.session.userId
+      ctx.session.userId as number
     )
     .where("answers.id", "=", input.id)
     .executeTakeFirstOrThrow()

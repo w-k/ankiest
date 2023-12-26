@@ -13,7 +13,7 @@ export default async function getCard(input: GetCardInput, ctx: Ctx) {
     .selectFrom("cards")
     .leftJoin("answers", "answers.cardId", "cards.id")
     .where("cards.id", "=", input.id)
-    .where("cards.userId", "=", ctx.session.userId)
+    .where("cards.userId", "=", ctx.session.userId as number)
     .groupBy("cards.id")
     .selectAll("cards")
     .select(sql`json_agg(answers.*)`.as("answers"))

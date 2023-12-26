@@ -1,5 +1,6 @@
+import Head from "next/head"
+import { BlitzLayout } from "@blitzjs/next"
 import { Banner } from "app/components/Banner"
-import { Head, BlitzLayout } from "blitz"
 
 const BannerLayout: BlitzLayout<{ title?: string }> = ({ title, children }) => {
   return (

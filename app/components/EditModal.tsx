@@ -1,6 +1,6 @@
+import { useMutation } from "@blitzjs/rpc"
 import { NewCard } from "app/cards/components/NewCard"
 import createCard from "app/cards/mutations/createCard"
-import { useMutation } from "blitz"
 import { Suspense } from "react"
 
 export const EditModal = (props: { onDeactivate: () => any }) => {
@@ -9,7 +9,7 @@ export const EditModal = (props: { onDeactivate: () => any }) => {
     e.stopPropagation()
   }
   const handleSubmit = async (card: { question: string; answers: string[] }) => {
-    createCardMutation(card)
+    await createCardMutation(card)
     props.onDeactivate()
   }
   return (

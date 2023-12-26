@@ -1,5 +1,5 @@
+import { useQuery } from "@blitzjs/rpc"
 import getCards from "app/cards/queries/getCards"
-import { useQuery } from "blitz"
 import { Suspense, useState } from "react"
 import { CardWithAnswers } from "types"
 

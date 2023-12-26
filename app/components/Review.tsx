@@ -1,10 +1,12 @@
+// import { getAntiCSRFToken } from "@blitzjs/auth";
 import { Feedback } from "app/components/Feedback"
 import { Prompt } from "app/components/Prompt"
 import { useEffect, useState } from "react"
 import { evaluateAnswer } from "app/logic/evaluateAnswer"
-import { getAntiCSRFToken } from "blitz"
 import { NextCardResponse, Stats } from "app/cards/queries/nextCardAndStats"
 import { CardWithAnswers } from "types"
+import { useMutation } from "@blitzjs/rpc"
+import submitAnswer from "app/cards/mutations/submitAnswer"
 
 export interface ReviewProps {
   card: CardWithAnswers
@@ -49,6 +51,7 @@ export const Review = (props: ReviewProps) => {
   const [givenAnswer, setGivenAnswer] = useState<string | null>(null)
   const [evaluation, setEvaluation] = useState<boolean | null>(null)
   const [nothingToReview, setNothingToReview] = useState(false)
+  const [submitAnswerMutation] = useMutation(submitAnswer)
 
   useEffect(() => {
     if (shouldShowNext) {
@@ -70,23 +73,15 @@ export const Review = (props: ReviewProps) => {
 
   const handlePromptSubmit = async (promptAnswer: string) => {
     const isCorrect = evaluateAnswer(promptAnswer, card.answers)
-    const submitAnswerResultPromise = fetch("/api/submitAnswer", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "anti-csrf": getAntiCSRFToken(),
-      },
-      body: JSON.stringify({ cardId: card.id, isCorrect }),
-    })
+    const submitAnswerResultPromise = submitAnswerMutation({ cardId: card.id, isCorrect })
     setGivenAnswer(promptAnswer)
     setEvaluation(isCorrect)
     const submitAnswerResult = await submitAnswerResultPromise
-    const submitAnswerResultJson: NextCardResponse = await submitAnswerResult.json()
-    setStats(submitAnswerResultJson.stats)
-    if (!submitAnswerResultJson.card) {
+    setStats(submitAnswerResult.stats)
+    if (!submitAnswerResult.card) {
       setNothingToReview(true)
     } else {
-      setNextCard(submitAnswerResultJson.card)
+      setNextCard(submitAnswerResult.card)
     }
   }
   return (

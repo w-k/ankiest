@@ -31,12 +31,10 @@ export default async function getCards(
   let sqlQuery = db
     .selectFrom("cards")
     .leftJoin("answers", "answers.cardId", "cards.id")
-    .where("cards.userId", "=", userId)
+    .where("cards.userId", "=", userId as number)
   if (query && query.length) {
     sqlQuery = sqlQuery.where((q) =>
-      q
-        .orWhere("answers.text", "like", `%${query}%`)
-        .orWhere("cards.question", "like", `%${query}%`)
+      q.or([q("answers.text", "like", `%${query}%`), q("cards.question", "like", `%${query}%`)])
     )
   }
   const total = await sqlQuery.select([sql`count(*)`.as("count")]).execute()
@@ -51,7 +49,6 @@ export default async function getCards(
     sqlQuery = sqlQuery.offset(offset).limit(limit)
   }
   const queryResult = await sqlQuery.execute()
-  console.log(`!PW >>> queryResult: ${JSON.stringify(queryResult)}`)
   return {
     values: queryResult as CardWithAnswers[],
     totalCount: (total[0]?.count as number) ?? 0,

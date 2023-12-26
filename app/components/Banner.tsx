@@ -1,5 +1,7 @@
+import Link from "next/link"
+import { useMutation } from "@blitzjs/rpc"
+import { Routes } from "@blitzjs/next"
 import logout from "app/auth/mutations/logout"
-import { Link, Routes, useMutation } from "blitz"
 import { HomeIcon, LogoutIcon } from "./icons"
 import { QuickAdd } from "./QuickAdd"
 import { Search } from "./Search"
@@ -12,7 +14,7 @@ export const Banner = () => {
   return (
     <div className="flex flex-row justify-between text-periwinkle-100 bg-periwinkle-500 px-2 py-1 h-10">
       <div className="flex space-x-8">
-        <Link href={Routes.Home()}>
+        <Link href={Routes.Home()} legacyBehavior>
           <a className="hover:text-blushPink-200">
             <HomeIcon />
           </a>

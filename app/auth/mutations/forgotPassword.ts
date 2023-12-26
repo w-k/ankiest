@@ -1,4 +1,5 @@
-import { Ctx, generateToken, hash256 } from "blitz"
+import { generateToken, hash256 } from "@blitzjs/auth"
+import { Ctx } from "blitz"
 import { db } from "db"
 import { forgotPasswordMailer } from "mailers/forgotPasswordMailer"
 import { z } from "zod"

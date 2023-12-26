@@ -20,13 +20,13 @@ export default async function deleteCard({ id }: z.infer<typeof DeleteCard>, ctx
             .whereRef("answers.cardId", "=", "cards.id")
             .limit(1),
         "=",
-        ctx.session.userId
+        ctx.session.userId as number
       )
 
     await q.execute()
     const { numDeletedRows } = await tx
       .deleteFrom("cards")
-      .where("cards.userId", "=", ctx.session.userId)
+      .where("cards.userId", "=", ctx.session.userId as number)
       .where("cards.id", "=", id)
       .executeTakeFirstOrThrow()
     if (numDeletedRows !== BigInt(1)) {

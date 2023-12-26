@@ -23,7 +23,7 @@ export default async function updateCard(input: z.infer<typeof UpdateCard>, ctx:
       lastReviewed: input.lastReviewed,
     })
     .where("cards.id", "=", input.id)
-    .where("cards.userId", "=", ctx.session.userId)
+    .where("cards.userId", "=", ctx.session.userId as number)
     .executeTakeFirstOrThrow()
 
   if (result.numUpdatedRows !== BigInt(1)) {

@@ -14,7 +14,7 @@ export default async function updateCurrentUser(
   const updatedUser = await db
     .updateTable("users")
     .set(input)
-    .where("users.id", "=", ctx.session.userId)
+    .where("users.id", "=", ctx.session.userId as number)
     .executeTakeFirstOrThrow()
   return updatedUser
 }

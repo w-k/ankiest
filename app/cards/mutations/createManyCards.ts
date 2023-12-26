@@ -21,7 +21,7 @@ export default async function createManyCards(input: z.infer<typeof CreateManyCa
         updatedAt: new Date(),
         lastReviewed: new Date(),
         nextReview: new Date(),
-        userId: ctx.session.userId!,
+        userId: ctx.session.userId as number,
       }))
     )
     .returning("id")

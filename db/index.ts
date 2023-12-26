@@ -1,6 +1,7 @@
 import { Pool } from "pg"
 
 import { ColumnType, Generated, Kysely, PostgresDialect } from "kysely"
+import { PublicData, SessionConfigMethods, SessionModel } from "@blitzjs/auth"
 
 interface TokenTable {
   id: Generated<number>
@@ -87,72 +88,57 @@ export { db }
 
 // https://github.com/blitz-js/blitz/blob/5460fbb4842c7bda94af5ecd51481668f2cba93f/nextjs/packages/next/stdlib-server/auth-sessions.ts
 
-const shim = {
-  session: {
-    findFirst: ({ where: { handle } }: any) => {
-      return db
-        .selectFrom("sessions")
-        .where("sessions.handle", "=", handle)
-        .selectAll()
-        .executeTakeFirst()
-    },
-
-    findMany: ({ where: { userId } }: any) => {
-      return db.selectFrom("sessions").where("sessions.userId", "=", userId).selectAll().execute()
-    },
-
-    // Sample input:
-    //
-    // {
-    //    "data":{
-    //       "expiresAt":"2022-06-20T05:30:10.964Z",
-    //       "handle":"I3L_WZ-QYUH13XHYz6mGARM5wMlX1lN8:ots",
-    //       "hashedSessionToken":"738c23c3f1d15465d0a145dea92c595afbf9b0a4db46363a9c5cc6e0fadb0807",
-    //       "antiCSRFToken":"slcnwe_R9ACTaPSBEN6yXWN4Gy-2BPKK",
-    //       "publicData":"{\"userId\":1,\"role\":\"USER\"}",
-    //       "privateData":"{}",
-    //       "user":{
-    //          "connect":{
-    //             "id":1
-    //          }
-    //       }
-    //    }
-    // }
-    create: (input: any) => {
-      const {
-        data: {
-          userId,
-          user: {
-            connect: { id },
-          },
-          ...session
-        },
-      } = input
-      return db
-        .insertInto("sessions")
-        .values({
-          ...session,
-          userId: userId ?? id,
-          updatedAt: new Date(),
-        } as any)
-        .executeTakeFirstOrThrow()
-    },
-
-    update: ({ where: { handle }, data: session }) => {
-      return db
-        .updateTable("sessions")
-        .where("sessions.handle", "=", handle)
-        .set(session)
-        .executeTakeFirstOrThrow()
-    },
-
-    delete: ({ where: { handle } }) => {
-      return db
-        .deleteFrom("sessions")
-        .where("sessions.handle", "=", handle)
-        .executeTakeFirstOrThrow()
-    },
-  },
+const findFirst = async (handle: string): Promise<SessionModel | null> => {
+  const result = db
+    .selectFrom("sessions")
+    .where("sessions.handle", "=", handle)
+    .selectAll()
+    .executeTakeFirst()
+  const r = await result
+  return r === undefined ? null : r
 }
 
-export default shim
+export const sessionConfigMethods: SessionConfigMethods = {
+  getSession: async (handle: string): Promise<SessionModel | null> => {
+    return findFirst(handle)
+  },
+  getSessions: async (userId: PublicData["userId"]): Promise<SessionModel[]> => {
+    return db
+      .selectFrom("sessions")
+      .where("sessions.userId", "=", userId as number)
+      .selectAll()
+      .execute()
+  },
+  createSession: async (session: SessionModel): Promise<SessionModel> => {
+    return db
+      .insertInto("sessions")
+      .values({
+        ...session,
+        updatedAt: new Date(),
+        // TODO: it's complaining about userId for some reason
+      } as any)
+      .returningAll()
+      .executeTakeFirstOrThrow()
+  },
+  updateSession: async (
+    handle: string,
+    session: Partial<SessionModel>
+  ): Promise<SessionModel | undefined> => {
+    return (
+      db
+        .updateTable("sessions")
+        .where("sessions.handle", "=", handle)
+        // TODO: also complaining about the type of userId
+        .set(session as any)
+        .returningAll()
+        .executeTakeFirstOrThrow()
+    )
+  },
+  deleteSession: async (handle: string): Promise<SessionModel | undefined> => {
+    return db
+      .deleteFrom("sessions")
+      .where("sessions.handle", "=", handle)
+      .returningAll()
+      .executeTakeFirstOrThrow()
+  },
+}

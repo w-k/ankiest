@@ -18,7 +18,7 @@ export default async function createCard(input: z.infer<typeof CreateCard>, ctx:
       updatedAt: new Date(),
       lastReviewed: new Date(),
       nextReview: new Date(),
-      userId: ctx.session.userId!,
+      userId: ctx.session.userId as number,
     })
     .returning("id")
     .executeTakeFirstOrThrow()

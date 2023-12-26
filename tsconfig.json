@@ -17,8 +17,13 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "tsBuildInfoFile": ".tsbuildinfo"
+    "tsBuildInfoFile": ".tsbuildinfo",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "exclude": ["node_modules", "**/*.e2e.ts", "cypress"],
-  "include": ["blitz-env.d.ts", "**/*.ts", "**/*.tsx"]
+  "exclude": ["node_modules", "**/*.e2e.ts", "cypress", "import-wordreference.ts"],
+  "include": ["blitz-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"]
 }

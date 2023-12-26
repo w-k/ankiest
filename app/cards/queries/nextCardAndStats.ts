@@ -28,11 +28,12 @@ export default async function nextCardAndStats(
     .leftJoin("answers", "answers.cardId", "cards.id")
     .selectAll("cards")
     .select(sql`json_agg(answers.*)`.as("answers"))
-    .where("cards.userId", "=", ctx.session.userId)
+    .where("cards.userId", "=", ctx.session.userId as number)
     .where((q) =>
-      q
-        .orWhere("cards.nextReview", "is", sql`null`)
-        .orWhere(sql`date("cards"."nextReview")`, "<=", sql`date(now())`)
+      q.or([
+        q("cards.nextReview", "is", sql`null`),
+        q(sql`date("cards"."nextReview")`, "<=", sql`date(now())`),
+      ])
     )
     .groupBy("cards.id")
     .orderBy(sql`"cards"."lastReviewed" is null`, "desc")
@@ -43,18 +44,19 @@ export default async function nextCardAndStats(
   const leftToReview = await db
     .selectFrom("cards")
     .select([sql`count(*)`.as("count")])
-    .where("cards.userId", "=", ctx.session.userId)
+    .where("cards.userId", "=", ctx.session.userId as number)
     .where((q) =>
-      q
-        .orWhere(sql`date("cards"."nextReview")`, "<=", sql`date(now())`)
-        .orWhere("cards.nextReview", "is", sql`null`)
+      q.or([
+        q(sql`date("cards"."nextReview")`, "<=", sql`date(now())`),
+        q("cards.nextReview", "is", sql`null`),
+      ])
     )
     .executeTakeFirst()
 
   const reviewedToday = await db
     .selectFrom("cards")
     .select([sql`count(*)`.as("count")])
-    .where("cards.userId", "=", ctx.session.userId)
+    .where("cards.userId", "=", ctx.session.userId as number)
     .where(sql`date("cards"."lastReviewed")`, "=", sql`date(now())`)
     .where(sql`date("cards"."nextReview")`, ">", sql`date(now())`)
     .executeTakeFirst()

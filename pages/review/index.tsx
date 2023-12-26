@@ -1,10 +1,12 @@
+import { gSSP } from "app/blitz-server"
+import { Routes, BlitzPage } from "@blitzjs/next"
 import nextCardAndStats, { NextCardResponse } from "app/cards/queries/nextCardAndStats"
 import { CardWithAnswers } from "types"
 import { LinkButton } from "app/components/LinkButton"
 import { Review } from "app/components/Review"
 import BannerLayout from "app/core/layouts/BannerLayout"
-import { invokeWithMiddleware, Routes, BlitzPage } from "blitz"
 import { useState } from "react"
+import { Ctx } from "blitz"
 
 const ReviewPage: BlitzPage<NextCardResponse> = (props) => {
   const [card, setCard] = useState<CardWithAnswers | undefined>(props.card)
@@ -26,12 +28,12 @@ const ReviewPage: BlitzPage<NextCardResponse> = (props) => {
   )
 }
 
-export async function getServerSideProps(context) {
-  const nextCardResult = await invokeWithMiddleware(nextCardAndStats, {}, context)
+export const getServerSideProps = gSSP(async ({ ctx }) => {
+  const nextCardResult = await nextCardAndStats({}, ctx)
   return {
     props: nextCardResult,
   }
-}
+})
 
 ReviewPage.authenticate = true
 ReviewPage.suppressFirstRenderFlicker = true
